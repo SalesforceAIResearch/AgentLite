@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://github.com/MetaMind/AgentLite/tree/main"><img width="300px" height="auto" src="./image/AgentLite.jpg"></a>
+  <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main"><img width="300px" height="auto" src="./image/AgentLite.jpg"></a>
 </div>
 
 <br/>
@@ -8,13 +8,13 @@
 
   ![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-brightgreen.svg)
   [![License](https://img.shields.io/badge/License-Apache-green.svg)]()
-  [![CodeCov](https://codecov.io/gh/SalesforceAIResearch/AgentLite//branch/main/graph/badge.svg)](https://codecov.io/gh/MetaMind/AgentLite)
+  [![CodeCov](https://codecov.io/gh/SalesforceAIResearch/AgentLite//branch/main/graph/badge.svg)](https://codecov.io/gh/SalesforceAIResearch/AgentLite)
   [![GitHub Repo Stars](https://img.shields.io/github/stars/SalesforceAIResearch/AgentLite?color=brightgreen&logo=github)](https://github.com/SalesforceAIResearch/AgentLite/stargazers)
 </div>
 
 <p align="center">
 <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-key-features">Key Features</a> |
-  <!-- <a href="https://github.com/MetaMind/AgentLite#-documentation">Documentation</a> | -->
+  <!-- <a href="https://github.com/SalesforceAIResearch/AgentLite#-documentation">Documentation</a> | -->
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#%EF%B8%8F-installation">Installation</a> |
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-quick-start">Quick Start</a> |
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-examples">Examples</a> |
