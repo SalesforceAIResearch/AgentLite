@@ -6,7 +6,7 @@
 
 <div align="center">
 
-  ![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-brightgreen.svg)
+  ![Python 3.8+](https://img.shields.io/badge/Python-3.9%2B-brightgreen.svg)
   [![License](https://img.shields.io/badge/License-Apache-green.svg)](https://github.com/MetaMind/AgentLite/blob/main/LICENSE)
   [![CodeCov](https://codecov.io/gh/MetaMind/AgentLite/branch/main/graph/badge.svg)](https://codecov.io/gh/MetaMind/AgentLite)
   [![GitHub Repo Stars](https://img.shields.io/github/stars/MetaMind/AgentLite?color=brightgreen&logo=github)](https://github.com/MetaMind/AgentLite/stargazers)
