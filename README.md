@@ -6,23 +6,19 @@
 
 <div align="center">
 
-  ![Python 3.8+](https://img.shields.io/badge/Python-3.9%2B-brightgreen.svg)
+  ![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-brightgreen.svg)
   [![License](https://img.shields.io/badge/License-Apache-green.svg)]()
-  [![CodeCov](https://codecov.io/gh/MetaMind/AgentLite/branch/main/graph/badge.svg)](https://codecov.io/gh/MetaMind/AgentLite)
-  [![GitHub Repo Stars](https://img.shields.io/github/stars/MetaMind/AgentLite?color=brightgreen&logo=github)](https://github.com/MetaMind/AgentLite/stargazers)
-  <!-- [![Documentation Status](https://img.shields.io/readthedocs/agentlite?logo=readthedocs)](https://agentlite.readthedocs.io) -->
-  <!-- [![Tests](https://github.com/MetaMind/AgentLite/actions/workflows/test.yml/badge.svg)](https://github.com/MetaMind/AgentLite/actions/workflows/test.yml) -->
-  <!-- [![Downloads](https://static.pepy.tech/personalized-badge/agentlite?period=total&left_color=grey&right_color=blue&left_text=downloads)](https://pepy.tech/project/agentlite) -->
-
+  [![CodeCov](https://codecov.io/gh/SalesforceAIResearch/AgentLite//branch/main/graph/badge.svg)](https://codecov.io/gh/MetaMind/AgentLite)
+  [![GitHub Repo Stars](https://img.shields.io/github/stars/SalesforceAIResearch/AgentLite?color=brightgreen&logo=github)](https://github.com/SalesforceAIResearch/AgentLite/stargazers)
 </div>
 
 <p align="center">
-<a href="https://github.com/MetaMind/AgentLite/tree/zuxin_cleanup?tab=readme-ov-file#-key-features">Key Features</a> |
+<a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-key-features">Key Features</a> |
   <!-- <a href="https://github.com/MetaMind/AgentLite#-documentation">Documentation</a> | -->
-  <a href="https://github.com/MetaMind/AgentLite/tree/zuxin_cleanup?tab=readme-ov-file#%EF%B8%8F-installation">Installation</a> |
-  <a href="https://github.com/MetaMind/AgentLite/tree/zuxin_cleanup?tab=readme-ov-file#-quick-start">Quick Start</a> |
-  <a href="https://github.com/MetaMind/AgentLite/tree/zuxin_cleanup?tab=readme-ov-file#-examples">Examples</a> |
-  <a href="https://github.com/MetaMind/AgentLite/tree/zuxin_cleanup?tab=readme-ov-file#-tutorials">Tutorials</a>
+  <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#%EF%B8%8F-installation">Installation</a> |
+  <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-quick-start">Quick Start</a> |
+  <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-examples">Examples</a> |
+  <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-tutorials">Tutorials</a>
 </p>
 
 ---
@@ -40,7 +36,7 @@ AgentLite is a research-oriented library designed for building and advancing LLM
 To get started with AgentLite, clone the repository and install the package using the following commands:
 
 ```shell
-git clone https://github.com/MetaMind/AgentLite.git
+git clone https://github.com/SalesforceAIResearch/AgentLite.git
 cd AgentLite
 pip install -e .
 ```
