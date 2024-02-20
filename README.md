@@ -182,5 +182,6 @@ Agent search_manager takes 0-step Action:
 
 - [Building Search Agent](./tutorials/building_search_agent.ipynb)
 - [Building a Multi-Agent Searching System](./tutorials/building_multi_agent_system.ipynb)
+- [Two Agent in Chess Game](./tutorials/chess_game.ipynb)
 
 For detailed examples and tutorials on how to utilize AgentLite for your research or projects, please visit the tutorials directory.
