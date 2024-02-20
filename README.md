@@ -7,7 +7,7 @@
 <div align="center">
 
   ![Python 3.8+](https://img.shields.io/badge/Python-3.9%2B-brightgreen.svg)
-  [![License](https://img.shields.io/badge/License-Apache-green.svg)](https://github.com/MetaMind/AgentLite/blob/main/LICENSE)
+  [![License](https://img.shields.io/badge/License-Apache-green.svg)]()
   [![CodeCov](https://codecov.io/gh/MetaMind/AgentLite/branch/main/graph/badge.svg)](https://codecov.io/gh/MetaMind/AgentLite)
   [![GitHub Repo Stars](https://img.shields.io/github/stars/MetaMind/AgentLite?color=brightgreen&logo=github)](https://github.com/MetaMind/AgentLite/stargazers)
   <!-- [![Documentation Status](https://img.shields.io/readthedocs/agentlite?logo=readthedocs)](https://agentlite.readthedocs.io) -->
@@ -184,4 +184,4 @@ Agent search_manager takes 0-step Action:
 - [Building a Multi-Agent Searching System](./tutorials/building_multi_agent_system.ipynb)
 - [Two Agent in Chess Game](./tutorials/chess_game.ipynb)
 
-For detailed examples and tutorials on how to utilize AgentLite for your research or projects, please visit the tutorials directory.
+For detailed examples and tutorials on how to utilize AgentLite for your research or projects, please visit the [tutorials directory](./tutorials/).
