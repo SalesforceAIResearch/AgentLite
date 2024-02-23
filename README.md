@@ -6,10 +6,11 @@
 
 <div align="center">
 
+  [![Release Notes](https://img.shields.io/github/release/SalesforceAIResearch/AgentLite)](https://github.com/SalesforceAIResearch/AgentLite/releases)
   ![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-brightgreen.svg)
   [![License](https://img.shields.io/badge/License-Apache-green.svg)]()
-  [![CodeCov](https://codecov.io/gh/SalesforceAIResearch/AgentLite//branch/main/graph/badge.svg)](https://codecov.io/gh/SalesforceAIResearch/AgentLite)
-  [![GitHub Repo Stars](https://img.shields.io/github/stars/SalesforceAIResearch/AgentLite?color=brightgreen&logo=github)](https://github.com/SalesforceAIResearch/AgentLite/stargazers)
+  [![GitHub star chart](https://img.shields.io/github/stars/SalesforceAIResearch/AgentLite?style=social)](https://star-history.com/#SalesforceAIResearch/AgentLite)
+
 </div>
 
 <p align="center">
@@ -23,7 +24,7 @@
 
 ---
 
-AgentLite is a research-oriented library designed for building and advancing LLM-based task-oriented agent systems. It simplifies the implementation of new agent/multi-agent architectures, enabling easy orchestration of multiple agents through a manager agent. Whether you're building individual agents or complex multi-agent systems, AgentLite provides a straightforward and lightweight foundation for your research and development.
+AgentLite is a research-oriented library designed for building and advancing LLM-based task-oriented agent systems. It simplifies the implementation of new agent/multi-agent architectures, enabling easy orchestration of multiple agents through a manager agent. Whether you're building individual agents or complex multi-agent systems, AgentLite provides a straightforward and lightweight foundation for your research and development. Check more details in paper.
 
 ## 🌟 Key Features
 
@@ -179,5 +180,21 @@ Agent search_manager takes 0-step Action:
 - [Building Search Agent](./tutorials/building_search_agent.ipynb)
 - [Building a Multi-Agent Searching System](./tutorials/building_multi_agent_system.ipynb)
 - [Two Agent in Chess Game](./tutorials/chess_game.ipynb)
+- [Math Problem Solving](./tutorials/math_problem_solving.ipynb)
+- [Interactive Image Understanding](./tutorials/interactive_image_understanding.ipynb)
 
 For detailed examples and tutorials on how to utilize AgentLite for your research or projects, please visit the [tutorials directory](./tutorials/).
+
+## Citation
+If you find our paper or code useful, please cite
+```
+@misc{liu2024agentlite,
+      title={AgentLite: A Lightweight Library for Building and Advancing Task-Oriented LLM Agent System}, 
+      author={Zhiwei Liu, Weiran Yao, Jianguo Zhang, Liangwei Yang, Zuxin Liu, Juntao Tan, Prafulla K. Choubey, Tian Lan, Jason Wu, Huan Wang, Shelby Heinecke, Caiming Xiong, Silvio Savarese},
+      year={2024},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI}
+}
+```
+
+## Acknowledgement
