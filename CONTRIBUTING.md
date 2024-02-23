@@ -2,28 +2,18 @@
 
 This page lists the operational governance model of this project, as well as the recommendations and requirements for how to best contribute to AgentLite. We strive to obey these as best as possible. As always, thanks for contributing – we hope these guidelines make it easier and shed some light on our approach and processes.
 
-# Governance Model
-> Pick the most appropriate one
-
 ## Community Based
 
 The intent and goal of open sourcing this project is to increase the contributor and user base. The governance model is one where new project leads (`admins`) will be added to the project based on their contributions and efforts, a so-called "do-acracy" or "meritocracy" similar to that used by all Apache Software Foundation projects.
 
-> or
 
 ## Salesforce Sponsored
 
 The intent and goal of open sourcing this project is to increase the contributor and user base. However, only Salesforce employees will be given `admin` rights and will be the final arbitrars of what contributions are accepted or not.
 
-> or
-
 ## Published but not supported
 
 The intent and goal of open sourcing this project is because it may contain useful or interesting code/concepts that we wish to share with the larger open source community. Although occasional work may be done on it, we will not be looking for or soliciting contributions.
-
-# Getting started
-
-Please join the community on {Here list Slack channels, Email lists, Glitter, Discord, etc... links}. Also please make sure to take a look at the project [roadmap](ROADMAP.md) to see where are headed.
 
 # Issues, requests & ideas
 
