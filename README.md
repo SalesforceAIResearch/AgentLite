@@ -14,8 +14,8 @@
 </div>
 
 <p align="center">
-<a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-key-features">Key Features</a> |
-  <!-- <a href="https://github.com/SalesforceAIResearch/AgentLite#-documentation">Documentation</a> | -->
+  <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#%EF%B8%8F-installation">Paper</a> |
+  <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-key-features">Key Features</a> |
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#%EF%B8%8F-installation">Installation</a> |
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-quick-start">Quick Start</a> |
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-examples">Examples</a> |
@@ -25,6 +25,9 @@
 ---
 
 AgentLite is a research-oriented library designed for building and advancing LLM-based task-oriented agent systems. It simplifies the implementation of new agent/multi-agent architectures, enabling easy orchestration of multiple agents through a manager agent. Whether you're building individual agents or complex multi-agent systems, AgentLite provides a straightforward and lightweight foundation for your research and development. Check more details in paper.
+
+## 🎉 News
+- **[02.2024]** Initial Relase of AgentLite library and paper!
 
 ## 🌟 Key Features
 
