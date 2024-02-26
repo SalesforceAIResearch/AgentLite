@@ -14,7 +14,7 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/SalesforceAIResearch/AgentLite/tutorials/agentlite.pdf">Paper</a> |
+  <a href="https://github.com/SalesforceAIResearch/AgentLite/blob/main/tutorials/agentlite.pdf">Paper</a> |
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-key-features">Key Features</a> |
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#%EF%B8%8F-installation">Installation</a> |
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-quick-start">Quick Start</a> |
