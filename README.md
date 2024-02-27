@@ -14,7 +14,7 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/SalesforceAIResearch/AgentLite/blob/main/tutorials/agentlite.pdf">Paper</a> |
+  <a href="https://arxiv.org/abs/2402.15538">Paper</a> |
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-key-features">Key Features</a> |
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#%EF%B8%8F-installation">Installation</a> |
   <a href="https://github.com/SalesforceAIResearch/AgentLite/tree/main?tab=readme-ov-file#-quick-start">Quick Start</a> |
@@ -24,10 +24,10 @@
 
 ---
 
-AgentLite is a research-oriented library designed for building and advancing LLM-based task-oriented agent systems. It simplifies the implementation of new agent/multi-agent architectures, enabling easy orchestration of multiple agents through a manager agent. Whether you're building individual agents or complex multi-agent systems, AgentLite provides a straightforward and lightweight foundation for your research and development. Check more details in paper.
+AgentLite is a research-oriented library designed for building and advancing LLM-based task-oriented agent systems. It simplifies the implementation of new agent/multi-agent architectures, enabling easy orchestration of multiple agents through a manager agent. Whether you're building individual agents or complex multi-agent systems, AgentLite provides a straightforward and lightweight foundation for your research and development. Check more details in [our paper](https://arxiv.org/abs/2402.15538).
 
 ## 🎉 News
-- **[02.2024]** Initial Relase of AgentLite library and paper!
+- **[02.2024]** Initial Relase of AgentLite library and [paper](https://arxiv.org/abs/2402.15538)!
 
 ## 🌟 Key Features
 
@@ -193,11 +193,16 @@ If you find our paper or code useful, please cite
 ```
 @misc{liu2024agentlite,
       title={AgentLite: A Lightweight Library for Building and Advancing Task-Oriented LLM Agent System}, 
-      author={Zhiwei Liu, Weiran Yao, Jianguo Zhang, Liangwei Yang, Zuxin Liu, Juntao Tan, Prafulla K. Choubey, Tian Lan, Jason Wu, Huan Wang, Shelby Heinecke, Caiming Xiong, Silvio Savarese},
+      author={Zhiwei Liu and Weiran Yao and Jianguo Zhang and Liangwei Yang and Zuxin Liu and Juntao Tan and Prafulla K. Choubey and Tian Lan and Jason Wu and Huan Wang and Shelby Heinecke and Caiming Xiong and Silvio Savarese},
       year={2024},
+      eprint={2402.15538},
       archivePrefix={arXiv},
-      primaryClass={cs.AI}
+      primaryClass={cs.MA}
 }
 ```
 
 ## Acknowledgement
+- We use some great tools in [Langchain](https://github.com/langchain-ai/langchain) to build the examples and the library LLM call
+
+## Contact
+Please reach out to us if you have any questions or suggestions. You can submit an issue or pull request, or send an email to zhiweiliu@salesforce.com
