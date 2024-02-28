@@ -2,6 +2,7 @@
 ## HotpotQA
 We follow [BOLAA](https://github.com/salesforce/BOLAA) environment to design the hotpotqa benchmark. And we designed the invidual agent with AgentLite. Run evaluation with 
 ```
+pip install joblib
 cd hotpotqa
 python evaluate_hotpot_qa.py
 ```
@@ -23,8 +24,8 @@ bash ./run_dev.sh
 ```
 it is highly suggested running webshop in backend with `tmux`.
 
-2. Since AgentLite is using a different python version, you should create a new environment for AgentLite.
-3. Run AgentLite evaluation in this folder  with
+3. Since AgentLite is using a different python version, you should create a new environment for AgentLite.
+2. Run AgentLite evaluation in this folder  with
 ```
 cd webshop
 python evaluate_webshop.py
