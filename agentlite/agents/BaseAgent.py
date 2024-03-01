@@ -64,7 +64,11 @@ class BaseAgent(ABCAgent):
         self.instruction = instruction
         self.reasoning_type = reasoning_type
         assert reasoning_type in REASONING_TYPES  # To-do: should be flexible
-        self.prompt_gen = BasePromptGen(agent_role=self.role, constraint=self.constraint, instruction=self.instruction)
+        self.prompt_gen = BasePromptGen(
+            agent_role=self.role,
+            constraint=self.constraint,
+            instruction=self.instruction,
+        )
         self.logger = logger
         self.__add_st_memory__()
         self.__add_inner_actions__()
@@ -156,7 +160,8 @@ class BaseAgent(ABCAgent):
         if task.completion in ["completed"]:
             return task.answer
         else:
-            return "I cannot help with that. Please be more specific"
+            # to do: add more actions after the task is not completed such as summarizing the actions
+            return DEFAULT_PROMPT["not_completed"]
 
     def __next_act__(
         self, task: TaskPackage, action_chain: ActObsChainType
@@ -172,9 +177,7 @@ class BaseAgent(ABCAgent):
         """
 
         action_prompt = self.prompt_gen.action_prompt(
-            task=task,
-            actions=self.actions,
-            action_chain=action_chain,
+            task=task, actions=self.actions, action_chain=action_chain,
         )
         self.logger.get_prompt(action_prompt)
         raw_action = self.llm_layer(action_prompt)
@@ -204,7 +207,7 @@ class BaseAgent(ABCAgent):
         :rtype: AgentAct
         """
 
-        action_name, args = parse_action(raw_action)
+        action_name, args, PARSE_FLAG = parse_action(raw_action)
         agent_act = AgentAct(name=action_name, params=args)
         return agent_act
 
@@ -238,7 +241,7 @@ class BaseAgent(ABCAgent):
         else:
             observation = ACION_NOT_FOUND_MESS
         return observation
-    
+
     def add_example(
         self,
         task: TaskPackage,

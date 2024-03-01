@@ -64,11 +64,12 @@ class LangchainLLM(BaseLLM):
         from langchain_openai import OpenAI
 
         super().__init__(llm_config)
-        llm = OpenAI(model_name = self.llm_name,
-                     openai_api_key = llm_config.openai_api_key, 
-                     temperature = self.temperature,
-                     max_tokens = self.max_tokens
-                     )
+        llm = OpenAI(
+            model_name=self.llm_name,
+            openai_api_key=llm_config.openai_api_key,
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+        )
         human_template = "{prompt}"
         prompt = PromptTemplate(template=human_template, input_variables=["prompt"])
         self.llm_chain = LLMChain(prompt=prompt, llm=llm)
@@ -76,16 +77,18 @@ class LangchainLLM(BaseLLM):
     def run(self, prompt: str):
         return self.llm_chain.run(prompt)
 
+
 class LangchainChatModel(BaseLLM):
     def __init__(self, llm_config: LLMConfig):
         from langchain_openai import ChatOpenAI
 
         super().__init__(llm_config)
-        llm = ChatOpenAI(model_name = self.llm_name,
-                     openai_api_key = llm_config.openai_api_key, 
-                     temperature = self.temperature,
-                     max_tokens = self.max_tokens
-                     )
+        llm = ChatOpenAI(
+            model_name=self.llm_name,
+            openai_api_key=llm_config.openai_api_key,
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+        )
         human_template = "{prompt}"
         prompt = PromptTemplate(template=human_template, input_variables=["prompt"])
         self.llm_chain = LLMChain(prompt=prompt, llm=llm)
@@ -105,21 +108,21 @@ class fast_llm(BaseLLM):
     # using fastchat llm server
     def __init__(self, llm_config: LLMConfig):
         super().__init__(llm_config=llm_config)
-    
-    def format_prompt(self, prompt: str, end_of_prompt: str)-> str:
+
+    def format_prompt(self, prompt: str, end_of_prompt: str) -> str:
         return prompt.strip() + " " + end_of_prompt
-    
-    def run(self, prompt: str)-> str:
+
+    def run(self, prompt: str) -> str:
         openai.api_key = "EMPTY"  # Not support yet
         openai.base_url = "http://localhost:8000/v1/"
         prompt = self.format_prompt(prompt, self.end_of_prompt)
         completion = openai.completions.create(
-                    model=self.llm_name,
-                    temperature=self.temperature,
-                    stop=self.stop,
-                    prompt=prompt,
-                    max_tokens=self.max_tokens,
-                )
+            model=self.llm_name,
+            temperature=self.temperature,
+            stop=self.stop,
+            prompt=prompt,
+            max_tokens=self.max_tokens,
+        )
         output = completion.choices[0].text
         return output
 

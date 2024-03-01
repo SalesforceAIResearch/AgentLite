@@ -1,6 +1,7 @@
 """functions or objects shared by agents"""
 
 import re
+import json
 
 from agentlite.actions.BaseAction import BaseAction
 
@@ -21,7 +22,7 @@ def act_match(input_act_name: str, act: BaseAction):
     return False
 
 
-def parse_action(string: str) -> tuple[str, str]:
+def parse_action(string: str) -> tuple[str, dict, bool]:
     """
     Parse an action string into an action type and an argument.
     """
@@ -29,31 +30,20 @@ def parse_action(string: str) -> tuple[str, str]:
     string = string.strip(" ").strip(".").strip(":").split("\n")[0]
     pattern = r"^(\w+)\[(.+)\]$"
     match = re.match(pattern, string)
+    PARSE_FLAG = True
 
     if match:
         action_type = match.group(1).strip()
-        argument = match.group(2).strip()
-        return action_type, eval(argument)
-    else:
-        action_type, argument = fuzzy_parse_action(string)
+        arguments = match.group(2).strip()
         try:
-            argument = eval(argument)
-        except:
-            print("unable to parse string:", string)
-            raise ValueError
-        return action_type, eval(argument)
-
-
-def fuzzy_parse_action(text):
-    text = text.strip(" ").strip(".")
-    pattern = r"^(\w+)\[(.+)\]"
-    match = re.match(pattern, text)
-    if match:
-        action_type = match.group(1)
-        argument = match.group(2)
-        return action_type, argument
+            arguments = json.loads(arguments)
+        except json.JSONDecodeError:
+            PARSE_FLAG = False
+            return string, {}, PARSE_FLAG
+        return action_type, arguments, PARSE_FLAG
     else:
-        return text, ""
+        PARSE_FLAG = False
+        return string, {}, PARSE_FLAG
 
 
 AGENT_CALL_ARG_KEY = "Task"

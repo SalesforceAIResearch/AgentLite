@@ -59,7 +59,11 @@ class ManagerAgent(BaseAgent):
             logger=logger,
         )
         self.team = TeamAgents
-        self.prompt_gen = ManagerPromptGen(agent_role=self.role, constraint=self.constraint, instruction=self.instruction)
+        self.prompt_gen = ManagerPromptGen(
+            agent_role=self.role,
+            constraint=self.constraint,
+            instruction=self.instruction,
+        )
 
     def agent_match(self, agent_name: str, agent: ABCAgent) -> bool:
         """math the generated action of agent_name with an agent in the team
@@ -119,7 +123,7 @@ class ManagerAgent(BaseAgent):
         :rtype: AgentAct
         """
 
-        action_name, args = parse_action(raw_action)
+        action_name, args, PARSE_FLAG = parse_action(raw_action)
         # if action_name match a labor_agent
         if self.team:
             for agent in self.team:
@@ -184,16 +188,3 @@ class ManagerAgent(BaseAgent):
             instruction=task_ins, task_creator=self.id, task_executor=executor
         )
         return task
-
-    def respond(self, task: TaskPackage, **kwargs) -> str:
-        """respond to the task
-
-        :param task: the task to respond
-        :type task: TaskPackage
-        :return: the response
-        :rtype: str
-        """
-        if task.completion in ["completed"]:
-            return task.answer
-        else:
-            return "I cannot help with that. Please be more specific"

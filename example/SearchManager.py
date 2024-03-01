@@ -11,7 +11,8 @@ from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
 from agentlite.logging.multi_agent_log import AgentLogger
 
-agent_logger = AgentLogger(PROMPT_DEBUG_FLAG=True)
+# set PROMPT_DEBUG_FLAG to True to see the debug info
+agent_logger = AgentLogger(PROMPT_DEBUG_FLAG=False)
 
 
 class SearchManager(ManagerAgent):
@@ -68,9 +69,7 @@ def test_manager_agent():
     act_4 = AgentAct(name=FinishAct.action_name, params={INNER_ACT_KEY: "Marc Benioff"})
     obs_4 = "Task Completed."
     exp_act_obs = [(act_1, obs_1), (act_2, obs_2), (act_3, obs_3), (act_4, obs_4)]
-    search_manager.add_example(
-        task=exp_task_pack, action_chain=exp_act_obs
-    )
+    search_manager.add_example(task=exp_task_pack, action_chain=exp_act_obs)
 
     # run test
     test_task = "what is micorsoft famous for"

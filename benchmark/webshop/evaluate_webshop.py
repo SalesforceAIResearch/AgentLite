@@ -22,11 +22,13 @@ temperature = 0.0
 llm_config_dict = {"llm_name": llm_name, "temperature": temperature}
 agent_logger = AgentLogger(PROMPT_DEBUG_FLAG=False)
 
-# test 
+# test
 def evalute(id: int):
     env_idx = f"fixed_{id}"
-    
-    agent = build_act_agent(session_idx=env_idx, llm_config_dict=llm_config_dict, logger=agent_logger)
+
+    agent = build_act_agent(
+        session_idx=env_idx, llm_config_dict=llm_config_dict, logger=agent_logger
+    )
     # reset the env
     action = "reset[]"
     observation, reward, done, asins, clickable = webshop_env.step(env_idx, action)
@@ -34,14 +36,15 @@ def evalute(id: int):
     task = webshop_env.goal
     task_package = TaskPackage(instruction=task)
     agent(task_package)
-    reward = webshop_env.reward 
+    reward = webshop_env.reward
     sub_reward = webshop_env.sub_reward
     return reward, sub_reward, task
+
 
 # using this function to rerun the evaluation if breaks
 def get_runned_ids(file_path):
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, "r") as file:
             runned_ids = [int(line.split()[0]) for line in file]
         return runned_ids
     except FileNotFoundError:
@@ -50,6 +53,7 @@ def get_runned_ids(file_path):
     except ValueError:
         print("The last item in the last line is not a valid number.")
         return None
+
 
 rewards = []
 all_task_ids = list(range(0, 252))
@@ -61,7 +65,7 @@ else:
     evalute_ids = [id for id in all_task_ids if id not in runned_ids]
 
 # running webshop evaluation
-with open(REWARD_LOG_FILE, 'a') as f:
+with open(REWARD_LOG_FILE, "a") as f:
     for i in evalute_ids:
         reward, subreward, task = evalute(i)
         rewards.append(reward)
