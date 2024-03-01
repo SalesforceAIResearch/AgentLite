@@ -32,6 +32,7 @@ DEFAULT_PROMPT = {
     "manager_instruction": f"""You are a manager agent. You can assign a task to those agents in your team. Follow your {PROMPT_TOKENS["role"]['begin']}, {PROMPT_TOKENS["action"]['begin']}, {PROMPT_TOKENS["team"]['begin']} to take actions.""",
     "constraint": f"""{CONSTRAITS["simple"]}""",
     "action_format": "Using the following action format example to generate well formatted actions.\n",
+    "not_completed": "I cannot help with that. Please be more specific.",
 }
 
 
@@ -64,7 +65,7 @@ def format_agent_call_example(agents_doc: dict[str, str]):
     return agent_call_example_str
 
 
-def action_format(act: AgentAct, action_trigger: bool=True) -> str:
+def action_format(act: AgentAct, action_trigger: bool = True) -> str:
     """unified format the action as a string"""
     str_params = json.dumps(act.params)
     if action_trigger:

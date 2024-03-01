@@ -27,32 +27,37 @@ def download_file(url, filename):
     """
     response = requests.get(url)
     response.raise_for_status()  # Check if the download was successful
-    with open(filename, 'wb') as f:
+    with open(filename, "wb") as f:
         f.write(response.content)
     print(f"Downloaded {filename}")
+
 
 def load_hotpot_qa_data(level):
     """
     Load HotpotQA data for a given level. If data doesn't exist, download it.
     """
-    file_path = f'./data/{level}.joblib'
-    data_url = f"https://github.com/salesforce/BOLAA/raw/main/hotpotqa_run/data/{level}.joblib"
-    
+    file_path = f"./data/{level}.joblib"
+    data_url = (
+        f"https://github.com/salesforce/BOLAA/raw/main/hotpotqa_run/data/{level}.joblib"
+    )
+
     if not os.path.exists(file_path):
         print(f"{level} data not found, downloading...")
         # Create directory if it doesn't exist
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         download_file(data_url, file_path)
-    
+
     return joblib.load(file_path)
+
 
 def normalize_answer(s):
     """
     Normalize answers for evaluation.
     """
+
     def remove_articles(text):
         return re.sub(r"\b(a|an|the)\b", " ", text)
-    
+
     def white_space_fix(text):
         return " ".join(text.split())
 
@@ -64,6 +69,7 @@ def normalize_answer(s):
         return text.lower()
 
     return white_space_fix(remove_articles(remove_punc(lower(s))))
+
 
 def f1_score(prediction, ground_truth):
     """
@@ -85,12 +91,20 @@ class WikiSearchAgent(BaseAgent):
     """
     Agent to search Wikipedia content and answer questions.
     """
+
     def __init__(self, llm: BaseLLM, actions: List[BaseAction] = None, **kwargs):
         name = "wiki_search_agent"
         role = "Answer questions by searching Wikipedia content."
         constraint = "Generation should be simple and clear."
-        super().__init__(name=name, role=role, llm=llm, actions=actions or [WikipediaSearch()], constraint=constraint, logger=AgentLogger(PROMPT_DEBUG_FLAG=False))
-        
+        super().__init__(
+            name=name,
+            role=role,
+            llm=llm,
+            actions=actions or [WikipediaSearch()],
+            constraint=constraint,
+            logger=AgentLogger(PROMPT_DEBUG_FLAG=False),
+        )
+
 
 def add_few_shot_examples(agent: WikiSearchAgent = None):
     """
@@ -132,7 +146,14 @@ def add_few_shot_examples(agent: WikiSearchAgent = None):
 
     # Adding example 1 into prompt_gen of the agent
     task_pack1 = TaskPackage(instruction=task1)
-    act_obs1 = [(act1_1, obs1_1), (act1_2, obs1_2), (act1_3, obs1_3), (act1_4, obs1_4), (act1_5, obs1_5), (act1_6, obs1_6)]
+    act_obs1 = [
+        (act1_1, obs1_1),
+        (act1_2, obs1_2),
+        (act1_3, obs1_3),
+        (act1_4, obs1_4),
+        (act1_5, obs1_5),
+        (act1_6, obs1_6),
+    ]
     agent.add_example(task=task_pack1, action_chain=act_obs1)
 
     # Example 2: Question about Pavel Urysohn and Leonid Levin
@@ -169,7 +190,14 @@ def add_few_shot_examples(agent: WikiSearchAgent = None):
 
     # Adding example 2 into prompt_gen of the agent
     task_pack2 = TaskPackage(instruction=task2)
-    act_obs2 = [(act2_1, obs2_1), (act2_2, obs2_2), (act2_3, obs2_3), (act2_4, obs2_4), (act2_5, obs2_5), (act2_6, obs2_6)]
+    act_obs2 = [
+        (act2_1, obs2_1),
+        (act2_2, obs2_2),
+        (act2_3, obs2_3),
+        (act2_4, obs2_4),
+        (act2_5, obs2_5),
+        (act2_6, obs2_6),
+    ]
     agent.add_example(task=task_pack2, action_chain=act_obs2)
 
 
@@ -187,9 +215,11 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613"):
 
     hotpot_data = load_hotpot_qa_data(level)
     hotpot_data = hotpot_data.reset_index(drop=True)
-    task_instructions = [(row['question'], row['answer']) for _, row in hotpot_data.iterrows()]
+    task_instructions = [
+        (row["question"], row["answer"]) for _, row in hotpot_data.iterrows()
+    ]
     f1_list, correct, results = [], 0, {}
-    for test_task, answer in tqdm(task_instructions, desc='Processing'):
+    for test_task, answer in tqdm(task_instructions, desc="Processing"):
         test_task_pack = TaskPackage(instruction=test_task)
 
         try:
@@ -197,7 +227,7 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613"):
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
             response = "Cannot find the answer."
-        
+
         f1, _, _ = f1_score(response, answer)
         f1_list.append(f1)
         correct += int(response == answer)
@@ -205,17 +235,32 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613"):
 
     avg_f1 = np.mean(f1_list)
     acc = correct / len(task_instructions)
-    with open(f'data/{llm_name}_results_{level}.json', 'w') as f:
+    with open(f"data/{llm_name}_results_{level}.json", "w") as f:
         json.dump(results, f, indent=4)
 
     return avg_f1, acc
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Test Search Agent on the HotPotQA Benchmark')
-    parser.add_argument('--level', type=str, choices=['easy', 'medium', 'hard'], default="medium", help='Difficulty level of the dataset.')
-    parser.add_argument('--llm', type=str, default="gpt-3.5-turbo-16k-0613", help='Name of the language model')
+    parser = argparse.ArgumentParser(
+        description="Test Search Agent on the HotPotQA Benchmark"
+    )
+    parser.add_argument(
+        "--level",
+        type=str,
+        choices=["easy", "medium", "hard"],
+        default="medium",
+        help="Difficulty level of the dataset.",
+    )
+    parser.add_argument(
+        "--llm",
+        type=str,
+        default="gpt-3.5-turbo-16k-0613",
+        help="Name of the language model",
+    )
     args = parser.parse_args()
 
     f1, acc = run_hotpot_qa_agent(level=args.level, llm_name=args.llm)
-    print(f"{'+'*100}\nLLM model: {args.llm}, Dataset: {args.level}, Result: F1-Score = {f1:.4f}, Accuracy = {acc:.4f}")
+    print(
+        f"{'+'*100}\nLLM model: {args.llm}, Dataset: {args.level}, Result: F1-Score = {f1:.4f}, Accuracy = {acc:.4f}"
+    )
