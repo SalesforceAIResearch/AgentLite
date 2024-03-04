@@ -1,6 +1,6 @@
 from typing import List
 
-from agentlite.actions import BaseAction, FinishAct, ThinkAct
+from agentlite.actions import BaseAction, FinishAct, ThinkAct, PlanAct
 from agentlite.actions.InnerActions import REASONING_TYPES
 from agentlite.agent_prompts import BasePromptGen
 from agentlite.agent_prompts.prompt_utils import DEFAULT_PROMPT
@@ -63,7 +63,6 @@ class BaseAgent(ABCAgent):
         self.constraint = constraint
         self.instruction = instruction
         self.reasoning_type = reasoning_type
-        assert reasoning_type in REASONING_TYPES  # To-do: should be flexible
         self.prompt_gen = BasePromptGen(
             agent_role=self.role,
             constraint=self.constraint,
@@ -91,6 +90,10 @@ class BaseAgent(ABCAgent):
             self.actions += [ThinkAct, FinishAct]
         elif self.reasoning_type == "act":
             self.actions += [FinishAct]
+        elif self.reasoning_type == "planact":
+            self.actions += [PlanAct, FinishAct]
+        elif self.reasoning_type == "planreact":
+            self.actions += [PlanAct, ThinkAct, FinishAct]
         else:
             Warning("Not yet supported. Will using react instead.")
             self.actions += [ThinkAct, FinishAct]
@@ -254,7 +257,7 @@ class BaseAgent(ABCAgent):
         :type task: TaskPackage
         :param action_chain: the action chain of this task
         :type action_chain: List[tuple[AgentAct, str]]
-        :param example_type: the type of this example, defaults to "react"
+        :param example_type: the type of this example, defaults to "action"
         :type example_type: str, optional
         """
         self.prompt_gen.add_example(task, action_chain, example_type=example_type)
