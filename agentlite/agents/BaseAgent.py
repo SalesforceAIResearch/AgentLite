@@ -28,9 +28,10 @@ class BaseAgent(ABCAgent):
     :type actions: List[BaseAction], optional
     :param constraint: the constraints of this agent , defaults to "You generation should be simple and clear."
     :type constraint: str, optional
-    :param instruction: the task description, defaults to "You are an intelligent agent.\
+    :param instruction: the agent instruction, defaults to "You are an intelligent agent.\
         You should follow your {PROMPT_TOKENS["role"]['begin']}, {PROMPT_TOKENS["action"]['begin']} to take actions.\
-            Your generation should follow the example format. Finish the task as best as you can."
+            Your generation should follow the example format. Finish the task as best as you can.". 
+            PROMPT_TOKENS is defined in agentlite/agent_prompts/prompt_utils.py
     :type instruction: str, optional
     :param reasoning_type: the reasoning type of this agent, defaults to "react"
     :type reasoning_type: str, optional

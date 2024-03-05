@@ -14,7 +14,7 @@ def get_requires():
 
 setup(
     name="agentlite",
-    version="0.0.4",
+    version="0.0.5",
     description="Light Library for Building LLM Agent System",
     packages=find_packages(exclude=["unit_test", "user*", "doc*", "examples"]),
     python_requires=">=3.9",
