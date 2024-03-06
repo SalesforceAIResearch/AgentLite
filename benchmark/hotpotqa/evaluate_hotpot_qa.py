@@ -120,11 +120,13 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613", agent_a
         correct += int(response == answer)
         results[test_task] = (response, answer)
 
-    avg_f1 = np.mean(f1_list)
-    acc = correct / len(task_instructions)
-    with open(f"data/{llm_name}_results_{level}.json", "w") as f:
-        json.dump(results, f, indent=4)
-
+        avg_f1 = np.mean(f1_list)
+        acc = correct / len(task_instructions)
+        
+        dump_str = f"{test_task}\t{answer}\t{response}\t{f1:.4f}\t{acc:.4f}"
+        with open(f"data/{agent_arch}_{llm_name}_results_{level}.csv", "a") as f:
+            f.write(dump_str, f, indent=4)
+            
     return avg_f1, acc
 
 
