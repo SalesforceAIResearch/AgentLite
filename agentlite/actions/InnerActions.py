@@ -2,7 +2,7 @@ from agentlite.actions.BaseAction import BaseAction
 
 DEF_INNER_ACT_OBS = "OK"
 INNER_ACT_KEY = "response"
-REASONING_TYPES = ["react", "act"]
+REASONING_TYPES = ["react", "act", "planact", "planreact"]
 
 
 class ThinkAction(BaseAction):
