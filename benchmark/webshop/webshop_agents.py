@@ -53,7 +53,7 @@ class WebshopAgent(BaseAgent):
         click_act = ClickAction("fixed_999")
         example_task = "i would like a 3 ounce bottle of bright citrus deodorant for sensitive skin, and price lower than 50.00 dollars"
         exp_task_package = TaskPackage(instruction=example_task)
-        act_1 = AgentAct(ThinkAct.action_name, params={INNER_ACT_KEY: "I should first use Search to search bright citrus deodorant for sensitive skin."})
+        act_1 = AgentAct(name=ThinkAct.action_name, params={INNER_ACT_KEY: "I should first use Search to search bright citrus deodorant for sensitive skin."})
         obs_1 = "OK"
         act_2 = AgentAct(
             name=search_act.action_name,
@@ -112,7 +112,7 @@ size [3 ounce (pack of 1)]}"""
         click_act = ClickAction("fixed_999")
         example_task = "i would like a 3 ounce bottle of bright citrus deodorant for sensitive skin, and price lower than 50.00 dollars"
         exp_task_package = TaskPackage(instruction=example_task)
-        act_1 = AgentAct(PlanAct.action_name, params={INNER_ACT_KEY: "I should first use Search to search bright citrus deodorant for sensitive skin. Then I need to click the most relevant product. After click to select those required options, including bright citrus, 3 ounce bottle. Finally, I should click the Buy Now button to finish the shopping."})
+        act_1 = AgentAct(name=PlanAct.action_name, params={INNER_ACT_KEY: "I should first use Search to search bright citrus deodorant for sensitive skin. Then I need to click the most relevant product. After click to select those required options, including bright citrus, 3 ounce bottle. Finally, I should click the Buy Now button to finish the shopping."})
         obs_1 = "OK"
         act_2 = AgentAct(
             name=search_act.action_name,
@@ -171,7 +171,7 @@ size [3 ounce (pack of 1)]}"""
         click_act = ClickAction("fixed_999")
         example_task = "i would like a 3 ounce bottle of bright citrus deodorant for sensitive skin, and price lower than 50.00 dollars"
         exp_task_package = TaskPackage(instruction=example_task)
-        act_1 = AgentAct(PlanAct.action_name, params={INNER_ACT_KEY: "I should first use Search to search bright citrus deodorant for sensitive skin. Then I need to click the most relevant product. After click to select those required options, including bright citrus, 3 ounce bottle. Finally, I should click the Buy Now button to finish the shopping."})
+        act_1 = AgentAct(name=PlanAct.action_name, params={INNER_ACT_KEY: "I should first use Search to search bright citrus deodorant for sensitive skin. Then I need to click the most relevant product. After click to select those required options, including bright citrus, 3 ounce bottle. Finally, I should click the Buy Now button to finish the shopping."})
         obs_1 = "OK"
         act_2 = AgentAct(
             name=search_act.action_name,

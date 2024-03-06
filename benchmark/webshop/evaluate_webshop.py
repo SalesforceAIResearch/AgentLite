@@ -20,16 +20,17 @@ from agentlite.logging.multi_agent_log import AgentLogger
 # test
 def evalute(idx: int, llm_name="gpt-3.5-turbo-16k-0613", agent_arch="react", PROMPT_DEBUG_FLAG=False):
     temperature = 0.0
-    llm_config_dict = {"llm_name": llm_name, "temperature": temperature}
-    llm = get_llm_backend(llm_config_dict)
-    agent = WebshopAgent(session_idx=idx, llm=llm, agent_arch=agent_arch, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
-    env_idx = f"fixed_{id}"
-
+    llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
+    llm = get_llm_backend(llm_config)
+    env_idx = f"fixed_{idx}"
     # reset the env
     action = "reset[]"
     observation, reward, done, asins, clickable = webshop_env.step(env_idx, action)
+    agent = WebshopAgent(session_idx=env_idx, llm=llm, agent_arch=agent_arch, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+    print(observation, reward, done, asins, clickable)
 
     task = webshop_env.goal
+    print(f"Task: {task}")
     task_package = TaskPackage(instruction=task)
     agent(task_package)
     reward = webshop_env.reward
