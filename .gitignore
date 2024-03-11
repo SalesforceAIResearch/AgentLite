@@ -6,6 +6,7 @@ node_modules/
 
 # Log files
 *.log
+*.out
 *.csv
 data/
 bin/
