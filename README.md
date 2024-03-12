@@ -189,6 +189,9 @@ Agent search_manager takes 0-step Action:
 - [Two Agent in Chess Game](./tutorials/chess_game.ipynb)
 - [Math Problem Solving](./tutorials/math_problem_solving.ipynb)
 - [Interactive Image Understanding](./tutorials/interactive_image_understanding.ipynb)
+- [Multi_LLM_QA](./tutorials/multi_LLM_QA.ipynb) 
+- [Search_and_Paint](./tutorials/search_and_paint.ipynb)
+- [Philosophers_chatting](./tutorials/philosophers_chatting.ipynb)
 
 For detailed examples and tutorials on how to utilize AgentLite for your research or projects, please visit the [tutorials directory](./tutorials/).
 
