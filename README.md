@@ -35,6 +35,10 @@ AgentLite is a research-oriented library designed for building and advancing LLM
 - **Task-oriented LLM-based Agents**: Focus on building agents for specific tasks, enhancing their performance and capabilities.
 - **Research-oriented Design**: A perfect tool for exploring advanced concepts in LLM-based multi-agent systems.
 
+## 🤖 Framework
+![AgentLite Framework](./image/AgentLite_Framework.jpg)
+
+
 ## 🛠️ Installation
 
 To get started with AgentLite, clone the repository and install the package using the following commands:
