@@ -27,7 +27,7 @@
 AgentLite is a research-oriented library designed for building and advancing LLM-based task-oriented agent systems. It simplifies the implementation of new agent/multi-agent architectures, enabling easy orchestration of multiple agents through a manager agent. Whether you're building individual agents or complex multi-agent systems, AgentLite provides a straightforward and lightweight foundation for your research and development. Check more details in [our paper](https://arxiv.org/abs/2402.15538).
 
 ## 🎉 News
-- **[02.2024]** Initial Relase of AgentLite library and [paper](https://arxiv.org/abs/2402.15538)!
+- **[02.2024]** Initial Release of AgentLite library and [paper](https://arxiv.org/abs/2402.15538)!
 
 ## 🌟 Key Features
 
