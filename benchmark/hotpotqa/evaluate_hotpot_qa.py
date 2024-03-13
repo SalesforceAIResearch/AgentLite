@@ -96,7 +96,17 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613", agent_a
     """
 
     # build the search agent
-    llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
+    # llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
+    # running xlam 
+    if llm_name in ["xlam", "xlam_v2"]:
+        llm_config = LLMConfig(
+            {
+                "llm_name": llm_name, 
+                "temperature": 0.0, 
+                "base_url": "http://35.222.47.179:8000/v1",
+                "openai_api_key": "EMPTY"
+            }
+        )
     llm = get_llm_backend(llm_config)
     agent = WikiSearchAgent(llm=llm, agent_arch=agent_arch, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
     # add several demo trajectories to the search agent for the HotPotQA benchmark
@@ -125,7 +135,7 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613", agent_a
         
         dump_str = f"{test_task}\t{answer}\t{response}\t{f1:.4f}\t{acc:.4f}"
         with open(f"data/{agent_arch}_{llm_name}_results_{level}.csv", "a") as f:
-            f.write(dump_str, f, indent=4)
+            f.write(dump_str)
             
     return avg_f1, acc
 
