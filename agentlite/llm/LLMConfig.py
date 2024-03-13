@@ -12,5 +12,6 @@ class LLMConfig:
         self.stop = ["\n"]
         self.max_tokens = 256
         self.end_of_prompt = ""
-        self.openai_api_key: str = os.environ.get("OPENAI_API_KEY", "")
+        self.api_key: str = os.environ.get("OPENAI_API_KEY", "")
+        self.base_url = None
         self.__dict__.update(config_dict)
