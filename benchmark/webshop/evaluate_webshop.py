@@ -76,7 +76,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--agent_arch",
         type=str,
-        choices=["react", "act", "planact", "planreact", "zs", "zst"],
+        choices=["react", "act", "planact", "planreact", "zs", "zst", "bolaa"],
         default="react",
         help="agent reasoning type",
     )

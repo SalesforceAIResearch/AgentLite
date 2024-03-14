@@ -97,7 +97,7 @@ def get_llm_backend(llm_config: LLMConfig):
     
     if llm_name in OPENAI_CHAT_MODELS:
         return LangchainChatModel(llm_config)
-    elif llm_name in OPENAI_LLM_MODELS+XLAM_MODELS:
+    elif llm_name in OPENAI_LLM_MODELS:
         return LangchainLLM(llm_config)
     else: 
         return LangchainLLM(llm_config)
