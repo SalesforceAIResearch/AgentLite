@@ -27,13 +27,17 @@
 AgentLite is a research-oriented library designed for building and advancing LLM-based task-oriented agent systems. It simplifies the implementation of new agent/multi-agent architectures, enabling easy orchestration of multiple agents through a manager agent. Whether you're building individual agents or complex multi-agent systems, AgentLite provides a straightforward and lightweight foundation for your research and development. Check more details in [our paper](https://arxiv.org/abs/2402.15538).
 
 ## 🎉 News
-- **[02.2024]** Initial Relase of AgentLite library and [paper](https://arxiv.org/abs/2402.15538)!
+- **[02.2024]** Initial Release of AgentLite library and [paper](https://arxiv.org/abs/2402.15538)!
 
 ## 🌟 Key Features
 
 - **Lightweight Codebase**: Designed for easy implementation of new Agent/Multi-Agent architectures.
 - **Task-oriented LLM-based Agents**: Focus on building agents for specific tasks, enhancing their performance and capabilities.
 - **Research-oriented Design**: A perfect tool for exploring advanced concepts in LLM-based multi-agent systems.
+
+## 🤖 Framework
+![AgentLite Framework](./image/AgentLite_Framework.jpg)
+
 
 ## 🛠️ Installation
 
@@ -185,6 +189,9 @@ Agent search_manager takes 0-step Action:
 - [Two Agent in Chess Game](./tutorials/chess_game.ipynb)
 - [Math Problem Solving](./tutorials/math_problem_solving.ipynb)
 - [Interactive Image Understanding](./tutorials/interactive_image_understanding.ipynb)
+- [Multi_LLM_QA](./tutorials/multi_LLM_QA.ipynb) 
+- [Search_and_Paint](./tutorials/search_and_paint.ipynb)
+- [Philosophers_chatting](./tutorials/philosophers_chatting.ipynb)
 
 For detailed examples and tutorials on how to utilize AgentLite for your research or projects, please visit the [tutorials directory](./tutorials/).
 

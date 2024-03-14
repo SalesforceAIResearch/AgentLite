@@ -134,6 +134,7 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613", agent_a
         acc = correct / len(task_instructions)
         
         dump_str = f"{test_task}\t{answer}\t{response}\t{f1:.4f}\t{acc:.4f}\n"
+        dump_str = f"{test_task}\t{answer}\t{response}\t{f1:.4f}\t{acc:.4f}\n"
         with open(f"data/{agent_arch}_{llm_name}_results_{level}.csv", "a") as f:
             f.write(dump_str)
             
