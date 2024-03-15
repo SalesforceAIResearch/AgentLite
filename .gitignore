@@ -3,6 +3,8 @@ node_modules/
 # Project
 /.vs
 .vscode
+# test
+*test*
 
 # Log files
 *.log

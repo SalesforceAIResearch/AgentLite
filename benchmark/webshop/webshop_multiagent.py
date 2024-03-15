@@ -1,8 +1,8 @@
 from webshop_actions import ClickAction, SearchAction
-
+from webshop_env import Webshop
 from agentlite.actions import BaseAction, FinishAct, ThinkAct, PlanAct
 from agentlite.actions.InnerActions import INNER_ACT_KEY
-from agentlite.agents import ABCAgent, BaseAgent
+from agentlite.agents import ABCAgent, BaseAgent, ManagerAgent
 from agentlite.commons import AgentAct, TaskPackage
 from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
@@ -12,9 +12,9 @@ class SearchAgent(BaseAgent):
     """
     webshop search agent
     """
-    def __init__(self, session_idx, llm: BaseLLM, agent_arch: str = "act", PROMPT_DEBUG_FLAG=False):
+    def __init__(self, session_idx, webshop_env:Webshop, llm: BaseLLM, agent_arch: str = "act", PROMPT_DEBUG_FLAG=False):
         name = "search_agent"
-        role = "You can search items on the webshop."
+        role = "You can search items on the webshop. After you search, you should Finish."
         self.agent_arch = agent_arch
         if agent_arch in ["zs"]:
             reasoning_type = "act"
@@ -28,11 +28,12 @@ class SearchAgent(BaseAgent):
             role=role,
             llm=llm,
             actions=[
-                SearchAction(session_idx=session_idx),
+                SearchAction(session_idx=session_idx, env=webshop_env),
             ],
             reasoning_type=reasoning_type,
             logger=AgentLogger(PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
         )
+        self.max_exec_steps = 2
         self.__build_examples__()
     
     def __build_examples__(self):
@@ -99,9 +100,16 @@ class ClickAgent(BaseAgent):
     """
     webshop search agent
     """
-    def __init__(self, session_idx, llm: BaseLLM, agent_arch: str = "act", PROMPT_DEBUG_FLAG=False):
+    def __init__(
+        self,
+        session_idx,
+        webshop_env:Webshop,
+        llm: BaseLLM,
+        agent_arch: str = "act", 
+        PROMPT_DEBUG_FLAG=False
+        ):
         name = "click_agent"
-        role = "You can click buttons on the webshop."
+        role = "You can click buttons on the webshop. You should Finish after you click [Buy Now] button even the result is false."
         self.agent_arch = agent_arch
         if agent_arch in ["zs"]:
             reasoning_type = "act"
@@ -115,7 +123,7 @@ class ClickAgent(BaseAgent):
             role=role,
             llm=llm,
             actions=[
-                ClickAction(session_idx=session_idx),
+                ClickAction(session_idx=session_idx, env=webshop_env),
             ],
             reasoning_type=reasoning_type,
             logger=AgentLogger(PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
@@ -161,8 +169,8 @@ Rating: N.A.
         act_1_3 = AgentAct(name=click_act.action_name, params={"button": "3 ounce (pack of 1)"})
         obs_1_3 = "WEB PAGE: {You have clicked 3 ounce (pack of 1).}"
         act_1_4 = AgentAct(name=click_act.action_name, params={"button": "Buy Now"})
-        obs_1_4 = "WEB PAGE: {Result: [Success]}"
-        act_1_5 = AgentAct(name=FinishAct.action_name, params={INNER_ACT_KEY: "Finish shoppping"})
+        obs_1_4 = "shopping is finished."
+        act_1_5 = AgentAct(name=FinishAct.action_name, params={INNER_ACT_KEY: "Finish shoppping."})
         obs_1_5 = "Finish shoppping"
         self.add_example(
             task=exp_task_package,
@@ -174,16 +182,59 @@ Rating: N.A.
                 (act_1_5, obs_1_5)
             ],
         )
+        example_task_2 = """i'm looking for a yellow hair styling product that is made from natural ingredients and easy to use, and price lower than 40.00 dollars.\nWEB PAGE: {
+[Back to Search] 
+Page 1 (Total results: 15) 
+[Next >] 
+[B09SHK8137] 
+Revitalizing Shampoo, Purple Shampoo Remove Yellow, Shampoo To Remove Yellow From Gray Hair, Natural Purple Shampoo And Conditioner Set, Protective Uv Filter Moisturizing Hair Care Lotion (100ml) 
+$13.88 
+[B08668NQJ1] 
+FOXTAIL Violet Velvet Toning Hair Mask - Enhance Blonde & Grey Highlights and Hair Colors - Gentle Light Non-Staining Toning Perfect for Dry, Delicate and Over Processed Bleached Hair - Antioxidant Enriched & Paraben Free - 4 Fl Oz 
+$36.0 
+[B08LYZJCX1] 
+OGX Blonde Enhance + Purple Toning Drops, Blonde Toning to Personalize Your Blonde, Silver, Pre-lightened, Natural Blonde Hair, with Keratin, Sulfate Surfactant Free, Paraben Free, 4oz 
+$7.47 }"""
+        act_2_1 = AgentAct(
+            name=click_act.action_name,
+            params={"button": "B08LYZJCX1"},
+        )
+        obs_2_2 = """WEB PAGE: {
+[Back to Search] 
+[< Prev] 
+style name [shampoo][shampoo + drops][toning drops]
+OGX Blonde Enhance + Purple Toning Drops, Blonde Toning to Personalize Your Blonde, Silver, Pre-lightened, Natural Blonde Hair, with Keratin, Sulfate Surfactant Free, Paraben Free, 4oz 
+Price: $7.47 
+Rating: N.A. 
+[Description] 
+[Features] 
+[Reviews] 
+[Attributes] 
+[Buy Now] }"""
+        act_2_2 = AgentAct(name=click_act.action_name, params={"button": "Buy Now"})
+        obs_2_2 = "shopping is finished."
+        act_2_3 = AgentAct(name=FinishAct.action_name, params={INNER_ACT_KEY: "Finish shoppping."})
+        obs_2_3 = "Finish shoppping"
+        self.add_example(
+            task=TaskPackage(instruction=example_task_2),
+            action_chain=[
+                (act_2_1, obs_2_2),
+                (act_2_2, obs_2_2),
+                (act_2_3, obs_2_3)
+            ],
+        )
 
 class bolaa_webagent:
-    def __init__(self, session_idx, env, llm: BaseLLM, PROMPT_DEBUG_FLAG=False):
-        self.webshop_env = env
+    def __init__(self, session_idx, env:Webshop, llm: BaseLLM, PROMPT_DEBUG_FLAG=False):
+        self.webshop_env: Webshop = env
         self.goal: str = ""
         self.observation: str = ""
         self.search_query_list: list = None
+        self.session_idx = session_idx
+        self.max_step = 4
         self._reset(session_idx)
-        self.search_agent = SearchAgent(session_idx, llm, PROMPT_DEBUG_FLAG)
-        self.click_agent = ClickAgent(session_idx, llm, PROMPT_DEBUG_FLAG)
+        self.search_agent = SearchAgent(session_idx, env, llm, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+        self.click_agent = ClickAgent(session_idx, env, llm, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
         
     def _reset(self, session_idx):
         action = "reset[]"
@@ -191,8 +242,10 @@ class bolaa_webagent:
         self.goal = self.webshop_env.goal
     
     def run(self):
-        while not self.webshop_env.done:
+        step = 0
+        while not self.webshop_env.done and step < self.max_step:
             self.step()
+            step += 1
 
     def step(self):
         if "[Search]" in self.observation:
@@ -202,11 +255,46 @@ class bolaa_webagent:
                 instruction = self.goal
             task = TaskPackage(instruction=instruction)
             self.search_agent(task)
-            self.observation = self.webshop_env.obs
-            print("last obs:", self.observation)
         else:
             instruction = f"""{self.goal}\n{self.observation}"""
             task = TaskPackage(instruction=instruction)
             self.click_agent(task)
-            self.observation = self.webshop_env.obs
-        
+        self.observation, _ = self.webshop_env.webshop_text(**self.webshop_env.sessions[self.session_idx])
+        print("last obs:", self.observation)
+
+class bolaa_webagent_model:
+    def __init__(self, session_idx, env:Webshop, llm: BaseLLM, PROMPT_DEBUG_FLAG=False):
+        self.webshop_env: Webshop = env
+        self.goal: str = ""
+        self.observation: str = ""
+        self.search_query_list: list = None
+        self.session_idx = session_idx
+        self.max_step = 4
+        self._reset(session_idx)
+        self.search_agent = SearchAgent(session_idx, env, llm, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+        self.click_agent = ClickAgent(session_idx, env, llm, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+        self.agent = ManagerAgent(
+            name="webshop_agent",
+            role="You are control search_agent and click_agent. Assign the task to a correct agent.",
+            llm=llm,
+            TeamAgents=[self.search_agent, self.click_agent],
+            logger=AgentLogger(PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+        )
+    
+    def _reset(self, session_idx):
+        action = "reset[]"
+        self.observation, self.reward, self.done, self.sub_reward, grounding = self.webshop_env.step(session_idx, action)
+        self.goal = self.webshop_env.goal
+    
+    def _build_react_examples(self):
+        example_task_1 = "i would like a 3 ounce bottle of bright citrus deodorant for sensitive skin, and price lower than 50.00 dollars"
+        act_1_1 = AgentAct(
+            name=ThinkAct.action_name,
+            params={INNER_ACT_KEY: "I should first ask the search_agent to search bright citrus deodorant"},
+        )
+        obs_1_1 = """OK"""
+        act_1_1 = AgentAct(
+            name=self.search_agent.action_name,
+            params={INNER_ACT_KEY: "I should first ask the search_agent to search bright citrus deodorant"},
+        )
+        # obs_1_1 = """WEB PAGE: {

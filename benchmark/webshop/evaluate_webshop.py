@@ -4,7 +4,7 @@ import os
 import argparse
 
 from webshop_agents import WebshopAgent
-from webshop_actions import webshop_env
+from webshop_env import Webshop
 from webshop_multiagent import bolaa_webagent
 
 from agentlite.actions import BaseAction, FinishAct, ThinkAct
@@ -15,8 +15,8 @@ from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
 from agentlite.logging.multi_agent_log import AgentLogger
 
-
-
+LAM_URL = os.environ["LAM_URL"]
+webshop_env = Webshop()
 # =============================== start of webshop agent designing =============================== #
 
 def evalute(idx: int, llm_name="gpt-3.5-turbo-16k-0613", agent_arch="react", PROMPT_DEBUG_FLAG=False):
@@ -25,8 +25,8 @@ def evalute(idx: int, llm_name="gpt-3.5-turbo-16k-0613", agent_arch="react", PRO
             {
                 "llm_name": llm_name, 
                 "temperature": 0.0, 
-                "base_url": "http://localhost:8000/v1",
-                "openai_api_key": "EMPTY"
+                "base_url": LAM_URL,
+                "api_key": "EMPTY"
             }
         )
     else:
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     rewards = []
-    all_task_ids = list(range(0, 252))
+    all_task_ids = list(range(0, 251))
     REWARD_LOG_FILE = f"{args.llm}_{args.agent_arch}_results_webshop.csv"
     runned_ids = get_runned_ids(REWARD_LOG_FILE)
     if runned_ids is None:
@@ -102,4 +102,13 @@ if __name__ == "__main__":
             rewards.append(reward)
             reward_str = f"""{i}\t{task}\t{subreward}\t{reward}\n"""
             f.write(reward_str)
+    
+    # calculate the average reward
+    # read the file and calculate the average reward
+    with open(REWARD_LOG_FILE, "r") as f:
+        lines = f.readlines()
+        rewards = [float(line.split('\t')[3]) for line in lines]
+    
+    avg_reward = sum(rewards) / len(rewards)
+    print(f"The average reward is: {avg_reward}")
 

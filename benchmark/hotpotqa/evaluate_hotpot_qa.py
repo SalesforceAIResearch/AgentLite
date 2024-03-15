@@ -104,7 +104,7 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613", agent_a
                 "llm_name": llm_name, 
                 "temperature": 0.0, 
                 "base_url": "http://localhost:8000/v1",
-                "openai_api_key": "EMPTY"
+                "api_key": "EMPTY"
             }
         )
     llm = get_llm_backend(llm_config)
