@@ -24,9 +24,12 @@ bash ./run_dev.sh
 ```
 it is highly suggested running webshop in backend with `tmux`.
 
-3. Since AgentLite is using a different python version, you should create a new environment for AgentLite.
-2. Run AgentLite evaluation in this folder  with
+2. Since AgentLite is using a different python version, you should create a new environment for AgentLite.
+3. Run AgentLite evaluation in this folder  with
 ```
 cd webshop
-python evaluate_webshop.py
+python evaluate_webshop.py --llm gpt-4-0613 --agent_arch act
 ```
+You can substitute the `--agent_arch` with different architectures as in [BOLAA](https://github.com/salesforce/BOLAA), including `react`, `act`, `planact`, `planreact`, `zs`, `zst`, `bolaa`
+
+Note that the `bolaa` implementation is slightly different from the [original paper](https://arxiv.org/abs/2308.05960) due to the communication template is different in AgentLite implementation. You could change it in your best practice. 
