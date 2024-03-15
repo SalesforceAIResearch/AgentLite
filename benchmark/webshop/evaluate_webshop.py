@@ -41,7 +41,7 @@ def evalute(idx: int, llm_name="gpt-3.5-turbo-16k-0613", agent_arch="react", PRO
         # reset the env first if not using bolaa agent
         action = "reset[]"
         webshop_env.step(env_idx, action)
-        agent = WebshopAgent(session_idx=env_idx, llm=llm, agent_arch=agent_arch, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+        agent = WebshopAgent(session_idx=env_idx, env=webshop_env, llm=llm, agent_arch=agent_arch, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
         task = webshop_env.goal
         print(f"Task: {task}")
         task_package = TaskPackage(instruction=task)

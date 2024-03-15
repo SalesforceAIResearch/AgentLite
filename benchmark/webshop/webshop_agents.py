@@ -1,4 +1,5 @@
 from webshop_actions import ClickAction, SearchAction
+from webshop_env import Webshop
 
 from agentlite.actions import BaseAction, FinishAct, ThinkAct, PlanAct
 from agentlite.actions.InnerActions import INNER_ACT_KEY
@@ -13,7 +14,7 @@ class WebshopAgent(BaseAgent):
     webshop agent
     """
 
-    def __init__(self, session_idx, llm: BaseLLM, agent_arch: str = "react", PROMPT_DEBUG_FLAG=False):
+    def __init__(self, session_idx, env:Webshop, llm: BaseLLM, agent_arch: str = "react", PROMPT_DEBUG_FLAG=False):
         name = "webshop_agent"
         role = "You can interact with the webshop."
         self.agent_arch = agent_arch
@@ -29,8 +30,8 @@ class WebshopAgent(BaseAgent):
             role=role,
             llm=llm,
             actions=[
-                ClickAction(session_idx=session_idx),
-                SearchAction(session_idx=session_idx),
+                ClickAction(session_idx=session_idx, env=env),
+                SearchAction(session_idx=session_idx, env=env),
             ],
             reasoning_type=reasoning_type,
             logger=AgentLogger(PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
