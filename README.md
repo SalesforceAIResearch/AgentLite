@@ -197,6 +197,10 @@ Agent search_manager takes 0-step Action:
 
 For detailed examples and tutorials on how to utilize AgentLite for your research or projects, please visit the [tutorials directory](./tutorials/).
 
+## 🔬 [Benchmark](./benchmark/)
+- [HotpotQA](./benchmark/hotpotqa/evaluate_hotpot_qa.py)
+- [Webshop](./benchmark/webshop/evaluate_webshop.py)
+
 ## Citation
 If you find our paper or code useful, please cite
 ```
