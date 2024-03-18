@@ -4,7 +4,8 @@ import os
 import argparse
 
 from webshop_agents import WebshopAgent
-from webshop_actions import webshop_env
+from webshop_env import Webshop
+from webshop_multiagent import bolaa_webagent
 
 from agentlite.actions import BaseAction, FinishAct, ThinkAct
 from agentlite.actions.InnerActions import INNER_ACT_KEY
@@ -14,25 +15,37 @@ from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
 from agentlite.logging.multi_agent_log import AgentLogger
 
-
+LAM_URL = os.environ["LAM_URL"]
+webshop_env = Webshop()
 # =============================== start of webshop agent designing =============================== #
 
-# test
 def evalute(idx: int, llm_name="gpt-3.5-turbo-16k-0613", agent_arch="react", PROMPT_DEBUG_FLAG=False):
-    temperature = 0.0
-    llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
+    if llm_name in ["xlam", "xlam_v2"]:
+        llm_config = LLMConfig(
+            {
+                "llm_name": llm_name, 
+                "temperature": 0.0, 
+                "base_url": LAM_URL,
+                "api_key": "EMPTY"
+            }
+        )
+    else:
+        llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
     llm = get_llm_backend(llm_config)
     env_idx = f"fixed_{idx}"
-    # reset the env
-    action = "reset[]"
-    observation, reward, done, asins, clickable = webshop_env.step(env_idx, action)
-    agent = WebshopAgent(session_idx=env_idx, llm=llm, agent_arch=agent_arch, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
-    print(observation, reward, done, asins, clickable)
-
-    task = webshop_env.goal
-    print(f"Task: {task}")
-    task_package = TaskPackage(instruction=task)
-    agent(task_package)
+    if agent_arch in ["bolaa"]:
+        agent = bolaa_webagent(session_idx=env_idx, env=webshop_env, llm=llm, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+        task = agent.goal
+        agent.run()
+    else:
+        # reset the env first if not using bolaa agent
+        action = "reset[]"
+        webshop_env.step(env_idx, action)
+        agent = WebshopAgent(session_idx=env_idx, env=webshop_env, llm=llm, agent_arch=agent_arch, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+        task = webshop_env.goal
+        print(f"Task: {task}")
+        task_package = TaskPackage(instruction=task)
+        agent(task_package)
     reward = webshop_env.reward
     sub_reward = webshop_env.sub_reward
     return reward, sub_reward, task
@@ -63,7 +76,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--agent_arch",
         type=str,
-        choices=["react", "act", "planact", "planreact", "zs", "zst"],
+        choices=["react", "act", "planact", "planreact", "zs", "zst", "bolaa"],
         default="react",
         help="agent reasoning type",
     )
@@ -74,7 +87,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     rewards = []
-    all_task_ids = list(range(0, 252))
+    all_task_ids = list(range(0, 251))
     REWARD_LOG_FILE = f"{args.llm}_{args.agent_arch}_results_webshop.csv"
     runned_ids = get_runned_ids(REWARD_LOG_FILE)
     if runned_ids is None:
@@ -89,4 +102,13 @@ if __name__ == "__main__":
             rewards.append(reward)
             reward_str = f"""{i}\t{task}\t{subreward}\t{reward}\n"""
             f.write(reward_str)
+    
+    # calculate the average reward
+    # read the file and calculate the average reward
+    with open(REWARD_LOG_FILE, "r") as f:
+        lines = f.readlines()
+        rewards = [float(line.split('\t')[3]) for line in lines]
+    
+    avg_reward = sum(rewards) / len(rewards)
+    print(f"The average reward is: {avg_reward}")
 

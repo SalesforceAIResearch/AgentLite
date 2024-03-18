@@ -56,7 +56,7 @@ class OpenAIChatLLM(BaseLLM):
 class LangchainLLM(BaseLLM):
     def __init__(self, llm_config: LLMConfig):
         from langchain_openai import OpenAI
-
+        
         super().__init__(llm_config)
         llm = OpenAI(
             model_name=self.llm_name,
