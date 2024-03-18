@@ -4,7 +4,7 @@ We follow [BOLAA](https://github.com/salesforce/BOLAA) environment to design the
 ```
 pip install joblib
 cd hotpotqa
-python evaluate_hotpot_qa.py
+python evaluate_hotpot_qa.py --llm gpt-4-0613 --agent_arch act
 ```
 
 ## Webshop
@@ -30,6 +30,14 @@ it is highly suggested running webshop in backend with `tmux`.
 cd webshop
 python evaluate_webshop.py --llm gpt-4-0613 --agent_arch act
 ```
-You can substitute the `--agent_arch` with different architectures as in [BOLAA](https://github.com/salesforce/BOLAA), including `react`, `act`, `planact`, `planreact`, `zs`, `zst`, `bolaa`
+
+## Agent Architectures
+You can substitute the `--agent_arch` with different architectures as in [BOLAA](https://github.com/salesforce/BOLAA), including `react`, `act`, `planact`, `planreact`, `zs`, `zst`, `bolaa`. The multi-agent architecture of hotpotqa will soon be released.
 
 Note that the `bolaa` implementation is slightly different from the [original paper](https://arxiv.org/abs/2308.05960) due to the communication template is different in AgentLite implementation. You could change it in your best practice. 
+
+
+## Local LLM Inference
+We suggest using url-based way for inference, such as [fastchat](https://github.com/lm-sys/FastChat/blob/main/docs/openai_api.md) to get response from local model. 
+We provides the [example code lines](https://github.com/SalesforceAIResearch/AgentLite/blob/3b40821ab3c6358947205ede1ed933f906f219e9/benchmark/webshop/evaluate_webshop.py#L23-L31) in benchmark evaluation code. 
+You only need to change the `base_url`, `llm_name` for your local model inference.
