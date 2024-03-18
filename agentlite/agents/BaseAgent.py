@@ -1,7 +1,6 @@
 from typing import List
 
 from agentlite.actions import BaseAction, FinishAct, ThinkAct, PlanAct
-from agentlite.actions.InnerActions import REASONING_TYPES
 from agentlite.agent_prompts import BasePromptGen
 from agentlite.agent_prompts.prompt_utils import DEFAULT_PROMPT
 from agentlite.agents.agent_utils import *
@@ -181,7 +180,9 @@ class BaseAgent(ABCAgent):
         """
 
         action_prompt = self.prompt_gen.action_prompt(
-            task=task, actions=self.actions, action_chain=action_chain,
+            task=task,
+            actions=self.actions,
+            action_chain=action_chain,
         )
         self.logger.get_prompt(action_prompt)
         raw_action = self.llm_layer(action_prompt)

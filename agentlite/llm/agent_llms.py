@@ -1,10 +1,8 @@
-import openai
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from openai import OpenAI
 
 from agentlite.llm.LLMConfig import LLMConfig
-from agentlite.llm.utils import get_response, post_http_request
 
 OPENAI_CHAT_MODELS = [
     "gpt-3.5-turbo",
@@ -56,7 +54,7 @@ class OpenAIChatLLM(BaseLLM):
 class LangchainLLM(BaseLLM):
     def __init__(self, llm_config: LLMConfig):
         from langchain_openai import OpenAI
-        
+
         super().__init__(llm_config)
         llm = OpenAI(
             model_name=self.llm_name,
@@ -83,7 +81,7 @@ class LangchainChatModel(BaseLLM):
             temperature=self.temperature,
             max_tokens=self.max_tokens,
             base_url=llm_config.base_url,
-            api_key=llm_config.api_key
+            api_key=llm_config.api_key,
         )
         human_template = "{prompt}"
         prompt = PromptTemplate(template=human_template, input_variables=["prompt"])
@@ -92,12 +90,13 @@ class LangchainChatModel(BaseLLM):
     def run(self, prompt: str):
         return self.llm_chain.run(prompt)
 
+
 def get_llm_backend(llm_config: LLMConfig):
     llm_name = llm_config.llm_name
-    
+
     if llm_name in OPENAI_CHAT_MODELS:
         return LangchainChatModel(llm_config)
     elif llm_name in OPENAI_LLM_MODELS:
         return LangchainLLM(llm_config)
-    else: 
+    else:
         return LangchainLLM(llm_config)

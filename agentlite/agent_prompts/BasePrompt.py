@@ -1,7 +1,6 @@
 from typing import List
 
 from agentlite.actions.BaseAction import BaseAction
-from agentlite.actions.InnerActions import REASONING_TYPES
 from agentlite.agent_prompts.prompt_utils import (
     DEFAULT_PROMPT,
     PROMPT_TOKENS,
@@ -62,7 +61,7 @@ class BasePromptGen(PromptGen):
         constraint: str = DEFAULT_PROMPT["constraint"],
         instruction: str = DEFAULT_PROMPT["agent_instruction"],
     ):
-        """ Prompt Generator for Base Agent
+        """Prompt Generator for Base Agent
         :param agent_role: the role of this agent, defaults to None
         :type agent_role: str, optional
         :param constraint: the constraint of this agent, defaults to None
@@ -176,8 +175,8 @@ class ManagerPromptGen(BasePromptGen):
         constraint: str = DEFAULT_PROMPT["constraint"],
         instruction: str = DEFAULT_PROMPT["manager_instruction"],
     ):
-        """ Prompt Generator for Manager Agent
-        
+        """Prompt Generator for Manager Agent
+
         :param agent_role: the role of this agent, defaults to None
         :type agent_role: str, optional
         :param constraint: the constraint of this agent, defaults to None
@@ -202,7 +201,7 @@ class ManagerPromptGen(BasePromptGen):
     ) -> str:
         """
         return the action generation prompt for agent.
-        
+
         :param task: the task to finish
         :type task: TaskPackage
         :param actions: the actions to take

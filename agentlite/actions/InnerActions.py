@@ -13,7 +13,9 @@ class ThinkAction(BaseAction):
             INNER_ACT_KEY: "this is your thinking response. Be specific and critical."
         }
         super().__init__(
-            action_name=action_name, action_desc=action_desc, params_doc=params_doc,
+            action_name=action_name,
+            action_desc=action_desc,
+            params_doc=params_doc,
         )
 
     def __call__(self, **kwargs):
@@ -28,7 +30,9 @@ class FinishAction(BaseAction):
             INNER_ACT_KEY: "this is the finish action response. Respond towards the task instruction."
         }
         super().__init__(
-            action_name=action_name, action_desc=action_desc, params_doc=params_doc,
+            action_name=action_name,
+            action_desc=action_desc,
+            params_doc=params_doc,
         )
 
     def __call__(self, response):
@@ -43,8 +47,10 @@ class PlanAction(BaseAction):
             INNER_ACT_KEY: "this is the generated plans. Should decompose the task instructions as easy to execute steps."
         }
         super().__init__(
-            action_name=action_name, action_desc=action_desc, params_doc=params_doc,
+            action_name=action_name,
+            action_desc=action_desc,
+            params_doc=params_doc,
         )
 
-    def __call__(self, response):
+    def __call__(self, **kwargs):
         return DEF_INNER_ACT_OBS

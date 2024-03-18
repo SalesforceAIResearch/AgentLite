@@ -13,7 +13,10 @@ class BaseAction:
     """
 
     def __init__(
-        self, action_name: str, action_desc: str, params_doc: dict = {},
+        self,
+        action_name: str,
+        action_desc: str,
+        params_doc: dict = {},
     ) -> None:
         """
         the agent action should be connected with data and env

@@ -38,7 +38,7 @@ class ManagerAgent(BaseAgent):
         :type name: str, optional
         :param role: the role of this agent, defaults to "This is the basic manager agent"
         :type role: str, optional
-        :param constraint: the constraints of this agent 
+        :param constraint: the constraints of this agent
         :type constraint: str, optional
         :param instruction: the instruction for this agent
         :type instruction: str, optional
