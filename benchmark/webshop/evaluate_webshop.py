@@ -19,7 +19,7 @@ LAM_URL = os.environ["LAM_URL"]
 webshop_env = Webshop()
 # =============================== start of webshop agent designing =============================== #
 
-def evalute(idx: int, llm_name="gpt-3.5-turbo-16k-0613", agent_arch="react", PROMPT_DEBUG_FLAG=False):
+def evaluate(idx: int, llm_name="gpt-3.5-turbo-16k-0613", agent_arch="react", PROMPT_DEBUG_FLAG=False):
     if llm_name in ["xlam", "xlam_v2"]:
         llm_config = LLMConfig(
             {
@@ -91,14 +91,14 @@ if __name__ == "__main__":
     REWARD_LOG_FILE = f"{args.llm}_{args.agent_arch}_results_webshop.csv"
     runned_ids = get_runned_ids(REWARD_LOG_FILE)
     if runned_ids is None:
-        evalute_ids = all_task_ids
+        evaluate_ids = all_task_ids
     else:
-        evalute_ids = [id for id in all_task_ids if id not in runned_ids]
+        evaluate_ids = [id for id in all_task_ids if id not in runned_ids]
 
     # running webshop evaluation
     with open(REWARD_LOG_FILE, "a") as f:
-        for i in evalute_ids:
-            reward, subreward, task = evalute(i, llm_name=args.llm, agent_arch=args.agent_arch, PROMPT_DEBUG_FLAG=args.debug)
+        for i in evaluate_ids:
+            reward, subreward, task = evaluate(i, llm_name=args.llm, agent_arch=args.agent_arch, PROMPT_DEBUG_FLAG=args.debug)
             rewards.append(reward)
             reward_str = f"""{i}\t{task}\t{subreward}\t{reward}\n"""
             f.write(reward_str)
@@ -111,4 +111,23 @@ if __name__ == "__main__":
     
     avg_reward = sum(rewards) / len(rewards)
     print(f"The average reward is: {avg_reward}")
+    
+    with open("complexity.csv") as f:
+        lines = f.readlines()
+        complexity = [line.split(',')[1].strip() for line in lines]
+    hard_reward = []
+    easy_reward = []
+    for i, c in enumerate(complexity):
+        if c == "easy":
+            easy_reward.append(rewards[i])
+        elif c == "hard":
+            hard_reward.append(rewards[i])
+        else:
+            raise ValueError("Invalid complexity value")
+    print(f"Average reward for easy tasks: {sum(easy_reward) / len(easy_reward)}")
+    print(f"Average reward for hard tasks: {sum(hard_reward) / len(hard_reward)}")
+        
+    
+    
+
 
