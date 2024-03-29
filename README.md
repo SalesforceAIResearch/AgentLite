@@ -201,6 +201,7 @@ For detailed examples and tutorials on how to utilize AgentLite for your researc
 ## 🔬 [Benchmark](./benchmark/)
 - [HotpotQA](./benchmark/hotpotqa/evaluate_hotpot_qa.py)
 - [Webshop](./benchmark/webshop/evaluate_webshop.py)
+- [Tool-query](./benchmark/tool/evaluate_tools.py)
 
 ## Citation
 If you find our paper or code useful, please cite
