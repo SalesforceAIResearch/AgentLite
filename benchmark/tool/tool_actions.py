@@ -51,7 +51,7 @@ class get_user_current_location(BaseAction):
 class get_historical_temp(BaseAction):
     def __init__(self, env = None) -> None:
         action_name = "get_historical_temp"
-        action_desc = "get the historical location of the user"
+        action_desc = "get the historical temperature of the user"
         params_doc = {
             "latitude": "(Type: number) latitude of the location",
             "longitude": "(Type: number) longitude of the location",
