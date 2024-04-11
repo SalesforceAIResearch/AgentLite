@@ -1,27 +1,17 @@
 import requests
-import logging
 from geopy.distance import geodesic
 from datetime import datetime
 from copy import deepcopy
 from datetime import datetime, timedelta
 
-logging.basicConfig(
-    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    level=logging.INFO,
-)
-
-logger = logging.getLogger(__name__)
-
-# 从IP中生成物理地址
 
 URLS = {
     "historical_weather": "https://archive-api.open-meteo.com/v1/archive",
     "geocoding": "https://geocoding-api.open-meteo.com/v1/search",
     "air_quality": "https://air-quality-api.open-meteo.com/v1/air-quality",
     "elevation": "https://api.open-meteo.com/v1/elevation",
-    # "zipcode": "http://ZiptasticAPI.com/{zipcode}"
-    # "weather_forecast": "https://api.open-meteo.com/v1/forecast",
+    "zipcode": "http://ZiptasticAPI.com/{zipcode}",
+    "weather_forecast": "https://api.open-meteo.com/v1/forecast",
 }
 
 def is_within_30_days(start_date: str, end_date: str) -> bool:
@@ -46,37 +36,6 @@ def clean_observation(observation):
         new_observation["daily"].pop("temperature_2m_mean")
     return new_observation
 
-def log_path(func):
-    def wrapper(*args, **kwargs):
-        if "action_path" in kwargs.keys():
-            action_path = kwargs["action_path"]
-            kwargs.pop("action_path")
-            success, result = func(*args, **kwargs)
-
-            # convert value in kwargs to string
-            # for key, value in kwargs.items():
-                # kwargs[key] = str(value)
-
-            if success:
-                action_path.append({
-                    "Action" : func.__name__,
-                    "Action Input" : str(kwargs),
-                    "Observation": result,
-                    "Subgoal": clean_observation( result )
-                })
-                return result
-            else:
-                action_path.append({
-                    "Action" : func.__name__,
-                    "Action Input" : str(kwargs),
-                    "Observation": result,
-                    "Subgoal": "Calling " + func.__name__ + " with " + str(kwargs) + " failed",
-                })
-                return result
-        else:
-            return func(*args, **kwargs)
-    return wrapper
-
 class weather_toolkits:
     def __init__(self, init_config=None):
         self.current_date = datetime.now().strftime("%Y-%m-%d")
@@ -86,17 +45,13 @@ class weather_toolkits:
                 self.current_date = init_config["current_date"]
             if "current_location" in init_config.keys():
                 self.current_location = init_config["current_location"]
-            
 
-    @log_path
     def get_user_current_date(self):
         return True, self.current_date
 
-    @log_path
     def get_user_current_location(self):
         return True, self.current_location
 
-    @log_path
     def get_historical_temp(self, latitude=None, longitude=None, start_date=None, end_date=None, is_historical=True):
         if is_historical is True:
             # make sure that start_date and end_date are fewer than current_date
@@ -143,7 +98,7 @@ class weather_toolkits:
         else:
             return False, response.text
 
-    @log_path
+    
     def get_historical_rain(self, latitude=None, longitude=None, start_date=None, end_date=None, is_historical=True):
         if is_historical is True:
             # make sure that start_date and end_date are fewer than current_date
@@ -188,7 +143,7 @@ class weather_toolkits:
         else:
             return False, response.text
 
-    @log_path
+    
     def get_historical_snow(self, latitude=None, longitude=None, start_date=None, end_date=None, is_historical=True):
         if is_historical is True:
             # make sure that start_date and end_date are fewer than current_date
@@ -233,7 +188,7 @@ class weather_toolkits:
         else:
             return False, response.text
 
-    @log_path
+    
     def get_snow_forecast(self,
                           latitude=None,
                           longitude=None,
@@ -261,7 +216,7 @@ class weather_toolkits:
                                             is_historical=False)
         return success, response
 
-    @log_path
+    
     def get_current_snow(self,
                          latitude=None,
                          longitude=None,
@@ -274,7 +229,7 @@ class weather_toolkits:
                                             )
         return success, response
 
-    @log_path
+    
     def get_current_temp(self, latitude=None, longitude=None, current_date=None):
         # We use get_historical_weather to get current weather
         success, response = self.get_historical_temp(latitude=latitude,
@@ -285,7 +240,7 @@ class weather_toolkits:
                                                )
         return success, response
 
-    @log_path
+    
     def get_latitude_longitude(self, name=None):
         def _clean(response):
             for item in response["results"]:
@@ -328,7 +283,7 @@ class weather_toolkits:
         else:
             return False, response.text
     
-    @log_path
+    
     def get_air_quality(slef, latitude=None, longitude=None):
         params = {
             "latitude": latitude,
@@ -342,7 +297,7 @@ class weather_toolkits:
         else:
             return False, response.text
 
-    @log_path
+    
     def get_elevation(self, latitude=None, longitude=None):
         params = {
             "latitude": latitude,
@@ -354,7 +309,7 @@ class weather_toolkits:
         else:
             return False, response.text
 
-    @log_path
+    
     def get_temp_forecast(self,
                              latitude=None,
                              longitude=None,
@@ -382,7 +337,7 @@ class weather_toolkits:
                                                 is_historical=False)
         return success, response
 
-    @log_path
+    
     def get_rain_forecast(self,
                           latitude=None,
                           longitude=None,
@@ -410,7 +365,7 @@ class weather_toolkits:
                                                 is_historical=False)
         return success, response
 
-    @log_path
+    
     def get_current_rain(self,
                          latitude=None,
                          longitude=None,
@@ -423,7 +378,7 @@ class weather_toolkits:
                                             )
         return success, response
 
-    @log_path
+    
     def get_distance(self, latitude1=None, longitude1=None, latitude2=None, 
                      longitude2=None):
         coord1 = (latitude1, longitude1)
@@ -431,7 +386,7 @@ class weather_toolkits:
         distance = geodesic(coord1, coord2).km
         return True, distance
     
-    @log_path
+    
     def get_historical_air_quality_index(self,
                            latitude=None,
                            longitude=None,
@@ -503,7 +458,7 @@ class weather_toolkits:
         else:
             return False, response.text
 
-    @log_path
+    
     def get_current_air_quality_index(self,
                            latitude=None,
                            longitude=None,
@@ -515,7 +470,7 @@ class weather_toolkits:
                                                          is_historical=False)
         return success, response
 
-    @log_path
+    
     def get_air_quality_level(self, air_quality_index):
         response = None
         if air_quality_index <= 20:
@@ -532,7 +487,7 @@ class weather_toolkits:
             response = "extremely poor"
         return True, response
     
-    @log_path
+    
     def convert_zipcode_to_address(self, zipcode):
         response = requests.get(URLS["zipcode"].format(zipcode=zipcode))
         if response.status_code == 200:
@@ -540,17 +495,17 @@ class weather_toolkits:
         else:
             return False, response.text
     
-    @log_path
+    
     def finish(self, answer):
         if type(answer) == list:
             answer = sorted(answer)
         return True, answer
 
-    # @log_path
+    # 
 
 if __name__ == "__main__":
     init_config = {
-        "current_date": "2023-01-01"
+        "current_date": "2024-04-10"
     }
     tool = weather_toolkits(init_config=init_config)
     
@@ -561,7 +516,7 @@ if __name__ == "__main__":
     # print( tool.get_eveluation(latitude="52.52", longitude="13.41") )
     # pprint( tool.get_air_quality(latitude="40.7128", longitude="-74.0060") )
     # pprint(tool.get_geocoding(name="New York"))
-    print(tool.get_historical_temp(latitude=31.22222, longitude=121.45806, start_date="2015-01-01", end_date="2015-03-01"))
+    print(tool.get_historical_temp(latitude=31.22222, longitude=121.45806, start_date="2024-04-07", end_date="2024-04-08"))
     # pprint( tool.get_historical_air(latitude=52.52, longitude=13.41, start_date="2022-11-01", end_date="2022-11-30") )
     # pprint( tool.convert_zipcode_to_address("84323") )
     # print( tool.get_geocoding(name="Shanghai") )
