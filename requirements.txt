@@ -1,16 +1,21 @@
-# formatting
-black
-
-# dependencies
-numpy
-pandas<2.0.0
-pydantic
+# core 
 langchain==0.1.3
 langchain_openai==0.0.5
 openai==1.10
+pydantic
+
+## formatting
+# black
+
+## example dependencies
+numpy
+pandas<2.0.0
 wikipedia
 duckduckgo-search
-streamlit
 openmeteo_requests==1.2.0
 requests_cache==1.2.0
 retry_requests==2.0.0
+
+## UI dependencies
+# streamlit
+# chainlit

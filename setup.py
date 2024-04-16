@@ -16,7 +16,7 @@ setup(
     name="agentlite",
     version="0.1.0",
     description="Light Library for Building LLM Agent System",
-    packages=find_packages(exclude=["unit_test", "user*", "doc*", "examples"]),
+    packages=find_packages(exclude=["test*", "app*", "doc*", "example"]),
     python_requires=">=3.9",
     install_requires=get_requires(),
 )
