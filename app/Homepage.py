@@ -6,7 +6,9 @@ st.set_page_config(
 )
 
 st.write("# Welcome to 🤖AgentLite🤖")
-st.write("#### Lightweight Library for Building and Advancing Task-Oriented LLM Agent System")
+st.write(
+    "#### Lightweight Library for Building and Advancing Task-Oriented LLM Agent System"
+)
 
 st.sidebar.success("Select a demo above.")
 

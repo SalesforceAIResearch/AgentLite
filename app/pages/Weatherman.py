@@ -19,7 +19,7 @@ llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
 llm = get_llm_backend(llm_config)
 
 agent_info = {
-    "name": "WeatherAgent",
+    "name": "Weatherman",
     "role": "Using weather API to get weather information. Do not skip any steps.",
 }
 
@@ -46,10 +46,14 @@ st.set_page_config(page_title="Weather Agent", page_icon="🌤️", layout="wide
 # Header of the app
 st.header("AgentLite: Weather Agent")
 st.sidebar.header("Weather Agent")
-st.sidebar.markdown("This is a weather agent that uses the OpenWeather API to get weather information. Do not skip any steps.")
+st.sidebar.markdown(
+    "This is a weather agent that uses the Weather API to get weather information on a particular location."
+)
 
 # Notes and warnings
-st.warning("Note: this service is hosted within Salesforce and user inputs are NOT logged. Regardless, it is not recommended that you enter confidential information.")
+st.warning(
+    "Note: this service is hosted within Salesforce and user inputs are NOT logged. Regardless, it is not recommended that you enter confidential information."
+)
 
 
 # Initialize session state variables if they don't exist
@@ -57,12 +61,12 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # Display chat messages from history on app rerun
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-        
+# for message in st.session_state.messages:
+#     with st.chat_message(message["role"]):
+#         st.markdown(message["content"])
+
 if prompt := st.chat_input("Enter your task:"):
-    task_pack = TaskPackage(instruction=prompt)    
+    task_pack = TaskPackage(instruction=prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
     # Display user message in chat message container
     with st.chat_message("user"):
@@ -74,4 +78,6 @@ if prompt := st.chat_input("Enter your task:"):
 
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-st.info("AgentLite is an AI created by the Salesforce AI research group. Your security and confidentiality are prioritized. If you have questions or need assistance with anything, just let me know, and I'll do my best to help. Have a great day!")
+st.info(
+    "AgentLite is an AI created by the Salesforce AI research group. Your security and confidentiality are prioritized. If you have questions or need assistance with anything, just let me know, and I'll do my best to help. Have a great day!"
+)
