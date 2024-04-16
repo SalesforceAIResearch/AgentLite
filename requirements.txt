@@ -18,4 +18,3 @@ retry_requests==2.0.0
 
 ## UI dependencies
 # streamlit
-# chainlit
