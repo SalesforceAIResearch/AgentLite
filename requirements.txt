@@ -11,3 +11,6 @@ openai==1.10
 wikipedia
 duckduckgo-search
 streamlit
+openmeteo_requests==1.2.0
+requests_cache==1.2.0
+retry_requests==2.0.0
