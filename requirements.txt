@@ -10,3 +10,4 @@ langchain_openai==0.0.5
 openai==1.10
 wikipedia
 duckduckgo-search
+streamlit
