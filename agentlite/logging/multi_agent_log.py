@@ -4,8 +4,9 @@ from agentlite.commons import AgentAct, TaskPackage
 from agentlite.logging.utils import *
 from agentlite.utils import bcolors
 
+from .BaseLogger import BaseAgentLogger
 
-class AgentLogger:
+class AgentLogger(BaseAgentLogger):
     def __init__(
         self,
         log_file_name: str = "agent.log",
@@ -13,7 +14,7 @@ class AgentLogger:
         OBS_OFFSET: int = 100,
         PROMPT_DEBUG_FLAG: bool = False,
     ) -> None:
-        self.log_file_name = log_file_name
+        super().__init__(log_file_name=log_file_name)
         self.FLAG_PRINT = FLAG_PRINT  # whether print the log into terminal
         self.OBS_OFFSET = OBS_OFFSET
         self.PROMPT_DEBUG_FLAG = PROMPT_DEBUG_FLAG
@@ -91,16 +92,3 @@ class AgentLogger:
         log_str = f"""LLM generates: {self.__color_prompt_str__(output)}"""
         if self.PROMPT_DEBUG_FLAG:
             self.__save_log__(log_str)
-
-
-if __name__ == "__main__":
-    aloger = AgentLogger()
-    agent_name = "labor_agent"
-    task_pack = TaskPackage(
-        instruction="this is a instruction",
-        task_creator="agent_1",
-        task_executor=f"{agent_name}",
-        completion=False,
-    )
-
-    aloger.receive_task(task_pack, agent_name=agent_name)

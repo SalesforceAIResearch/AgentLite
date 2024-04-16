@@ -1,4 +1,5 @@
 import os
+import chainlit as cl
 import streamlit as st
 
 
@@ -6,7 +7,9 @@ from agentlite.commons import AgentAct, TaskPackage
 from agentlite.logging.utils import *
 from agentlite.utils import bcolors
 
-class AgentLogger:
+from .BaseLogger import BaseAgentLogger
+
+class AgentLogger(BaseAgentLogger):
     def __init__(
         self,
         log_file_name: str = "agent.log",
@@ -18,21 +21,6 @@ class AgentLogger:
         self.FLAG_PRINT = FLAG_PRINT  # whether print the log into terminal
         self.OBS_OFFSET = OBS_OFFSET
         self.PROMPT_DEBUG_FLAG = PROMPT_DEBUG_FLAG
-
-    def __color_agent_name__(self, agent_name: str):
-        return f"""{bcolors.OKBLUE}{agent_name}{bcolors.ENDC}"""
-
-    def __color_task_str__(self, task_str: str):
-        return f"""{bcolors.OKCYAN}{task_str}{bcolors.ENDC}"""
-
-    def __color_act_str__(self, act_str: str):
-        return f"""{bcolors.OKBLUE}{act_str}{bcolors.ENDC}"""
-
-    def __color_obs_str__(self, act_str: str):
-        return f"""{bcolors.OKGREEN}{act_str}{bcolors.ENDC}"""
-
-    def __color_prompt_str__(self, prompt: str):
-        return f"""{bcolors.WARNING}{prompt}{bcolors.ENDC}"""
 
     def __check_log_file__(self):
         if os.path.isdir(self.log_file_name):
@@ -47,14 +35,9 @@ class AgentLogger:
         st.session_state.messages.append({"role": "assistant", "content": log_str})
             
     def receive_task(self, task: TaskPackage, agent_name: str):
-        task_str = (
-            f"""[\n\tTask ID: {task.task_id}\n\tInstruction: {task.instruction}\n]"""
-        )
         log_str = f"""Agent {agent_name} """
         log_str += f"""receives the following TaskPackage:\n"""
-        # log_str += f"{self.__color_task_str__(task_str=task_str)}"
-        # self.__save_log__(log_str=log_str)
-
+        
     def execute_task(self, task: TaskPackage = None, agent_name: str = None, **kwargs):
         log_str = f"""{agent_name} starts execution on TaskPackage {task.task_id}===="""
         # self.__save_log__(log_str=log_str)
@@ -73,10 +56,6 @@ class AgentLogger:
         {act_str}```"""
         self.__save_log__(log_str)
 
-    def add_st_memory(self, agent_name: str):
-        log_str = f"""Action and Observation added to {agent_name} memory"""
-        self.__save_log__(log_str)
-
     def get_obs(self, obs: str):
         if len(obs) > self.OBS_OFFSET:
             obs = obs[: self.OBS_OFFSET] + "[TLDR]"
@@ -92,16 +71,3 @@ class AgentLogger:
         log_str = f"""LLM generates: {output}"""
         if self.PROMPT_DEBUG_FLAG:
             self.__save_log__(log_str)
-
-
-if __name__ == "__main__":
-    aloger = AgentLogger()
-    agent_name = "labor_agent"
-    task_pack = TaskPackage(
-        instruction="this is a instruction",
-        task_creator="agent_1",
-        task_executor=f"{agent_name}",
-        completion=False,
-    )
-
-    aloger.receive_task(task_pack, agent_name=agent_name)
