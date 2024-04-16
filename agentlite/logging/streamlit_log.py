@@ -13,7 +13,7 @@ class AgentLogger(BaseAgentLogger):
         self,
         log_file_name: str = "agent.log",
         FLAG_PRINT: bool = True,
-        OBS_OFFSET: int = 100,
+        OBS_OFFSET: int = 500,
         PROMPT_DEBUG_FLAG: bool = False,
     ) -> None:
         self.log_file_name = log_file_name
