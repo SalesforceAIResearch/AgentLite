@@ -8,7 +8,7 @@ from agentlite.commons import AgentAct, TaskPackage
 from agentlite.commons.AgentAct import ActObsChainType
 from agentlite.llm.agent_llms import BaseLLM
 from agentlite.logging import DefaultLogger
-from agentlite.logging.multi_agent_log import AgentLogger
+from agentlite.logging.terminal_logger import AgentLogger
 
 from .ABCAgent import ABCAgent
 from .BaseAgent import BaseAgent

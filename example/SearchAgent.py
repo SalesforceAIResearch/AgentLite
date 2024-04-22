@@ -8,7 +8,7 @@ from agentlite.agents import ABCAgent, BaseAgent
 from agentlite.commons import AgentAct, TaskPackage
 from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
-from agentlite.logging.multi_agent_log import AgentLogger
+from agentlite.logging.terminal_logger import AgentLogger
 
 # set PROMPT_DEBUG_FLAG to True to see the debug info
 agent_logger = AgentLogger(PROMPT_DEBUG_FLAG=False)

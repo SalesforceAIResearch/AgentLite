@@ -7,9 +7,9 @@ from agentlite.commons import AgentAct, TaskPackage
 from agentlite.logging.utils import *
 from agentlite.utils import bcolors
 
-from .BaseLogger import BaseAgentLogger
+from .base import BaseAgentLogger
 
-class AgentLogger(BaseAgentLogger):
+class UILogger(BaseAgentLogger):
     def __init__(
         self,
         log_file_name: str = "agent.log",

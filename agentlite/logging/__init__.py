@@ -1,3 +1,3 @@
-from agentlite.logging.multi_agent_log import AgentLogger
+from agentlite.logging.terminal_logger import AgentLogger
 
 DefaultLogger = AgentLogger()
