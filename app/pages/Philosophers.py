@@ -5,7 +5,7 @@ from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
 from agentlite.actions.BaseAction import BaseAction
 
-from agentlite.logging.streamlit_log import UILogger
+from agentlite.logging.streamlit_logger import UILogger
 
 import streamlit as st
 

@@ -5,7 +5,6 @@ import streamlit as st
 
 from agentlite.commons import AgentAct, TaskPackage
 from agentlite.logging.utils import *
-from agentlite.utils import bcolors
 
 from .base import BaseAgentLogger
 
@@ -21,13 +20,6 @@ class UILogger(BaseAgentLogger):
         self.FLAG_PRINT = FLAG_PRINT  # whether print the log into terminal
         self.OBS_OFFSET = OBS_OFFSET
         self.PROMPT_DEBUG_FLAG = PROMPT_DEBUG_FLAG
-
-    def __check_log_file__(self):
-        if os.path.isdir(self.log_file_name):
-            return True
-        else:
-            print(f"{self.log_file_name} does not exist. Created one")
-            return False
         
     def __save_log__(self, log_str: str):
         with st.chat_message("assistant"):

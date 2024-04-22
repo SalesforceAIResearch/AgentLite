@@ -12,7 +12,7 @@ from agentlite.agents import BaseAgent
 from agentlite.commons import TaskPackage
 from agentlite.llm.agent_llms import get_llm_backend, LLMConfig
 
-from agentlite.logging.streamlit_log import UILogger
+from agentlite.logging.streamlit_logger import UILogger
 
 llm_name = "gpt-4"
 llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
