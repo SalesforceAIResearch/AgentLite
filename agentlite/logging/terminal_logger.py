@@ -4,7 +4,7 @@ from agentlite.commons import AgentAct, TaskPackage
 from agentlite.logging.utils import *
 from agentlite.utils import bcolors
 
-from .BaseLogger import BaseAgentLogger
+from .base import BaseAgentLogger
 
 class AgentLogger(BaseAgentLogger):
     def __init__(
@@ -33,13 +33,6 @@ class AgentLogger(BaseAgentLogger):
 
     def __color_prompt_str__(self, prompt: str):
         return f"""{bcolors.WARNING}{prompt}{bcolors.ENDC}"""
-
-    def __check_log_file__(self):
-        if os.path.isdir(self.log_file_name):
-            return True
-        else:
-            print(f"{self.log_file_name} does not exist. Created one")
-            return False
 
     def __save_log__(self, log_str: str):
         if self.FLAG_PRINT:

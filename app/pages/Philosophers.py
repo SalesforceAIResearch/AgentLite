@@ -5,7 +5,7 @@ from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
 from agentlite.actions.BaseAction import BaseAction
 
-from agentlite.logging.streamlit_log import AgentLogger
+from agentlite.logging.streamlit_logger import UILogger
 
 import streamlit as st
 
@@ -40,7 +40,7 @@ llm_name = "gpt-4"
 llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
 llm = get_llm_backend(llm_config)
 
-logger = AgentLogger()
+logger = UILogger()
 
 
 Confucius = Philosopher(philosopher="Confucius", llm=llm)

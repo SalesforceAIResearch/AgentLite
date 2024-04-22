@@ -20,7 +20,7 @@ from agentlite.agents import BaseAgent
 from agentlite.commons import AgentAct, TaskPackage
 from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
-from agentlite.logging.multi_agent_log import AgentLogger
+from agentlite.logging.terminal_logger import AgentLogger
 
 
 

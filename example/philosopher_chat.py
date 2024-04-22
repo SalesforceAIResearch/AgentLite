@@ -3,7 +3,7 @@ from typing import List
 from agentlite.agents import ABCAgent, BaseAgent
 from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
-from agentlite.logging.multi_agent_log import AgentLogger
+from agentlite.logging.terminal_logger import AgentLogger
 from agentlite.actions.BaseAction import BaseAction
 
 # Define the Philosopher class 
