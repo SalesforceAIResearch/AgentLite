@@ -71,7 +71,7 @@ After installation, start with
 steamlite run app/Homepage.py
 ```
 Check our recorded UI demo.
-[UI demo](./app/weather_agent.mp4).
+![UI demo](./image/weather_agent.gif)
 
 
 ## 🔍 Examples
