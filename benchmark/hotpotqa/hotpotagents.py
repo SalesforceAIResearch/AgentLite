@@ -2,7 +2,7 @@ from SearchActions import WikipediaSearch
 
 from agentlite.actions import BaseAction, FinishAct, ThinkAct, PlanAct
 from agentlite.actions.InnerActions import INNER_ACT_KEY
-from agentlite.agents import BaseAgent
+from agentlite.agents.BaseAgent import BaseAgent
 from agentlite.commons import AgentAct, TaskPackage
 from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig

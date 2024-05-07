@@ -10,13 +10,12 @@ import joblib
 import numpy as np
 import requests
 from tqdm import tqdm
-from SearchActions import WikipediaSearch
 from hotpotagents import WikiSearchAgent 
-
+from hotpot_multiagent import SearchAgent, ReasonAgent
 
 from agentlite.actions import BaseAction, FinishAct, ThinkAct
 from agentlite.actions.InnerActions import INNER_ACT_KEY
-from agentlite.agents import BaseAgent
+from agentlite.agents.BaseAgent import BaseAgent
 from agentlite.commons import AgentAct, TaskPackage
 from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
@@ -107,8 +106,14 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613", agent_a
                 "api_key": "EMPTY"
             }
         )
+    else:
+        llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
     llm = get_llm_backend(llm_config)
-    agent = WikiSearchAgent(llm=llm, agent_arch=agent_arch, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+    if agent_arch in ["bolaa"]:
+        search_agent = SearchAgent(llm=llm, agent_arch="react", PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+        agent = ReasonAgent(llm=llm, search_agent=search_agent, agent_arch=agent_arch, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+    else:
+        agent = WikiSearchAgent(llm=llm, agent_arch=agent_arch, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
     # add several demo trajectories to the search agent for the HotPotQA benchmark
     hotpot_data = load_hotpot_qa_data(level)
     hotpot_data = hotpot_data.reset_index(drop=True)
@@ -161,7 +166,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--agent_arch",
         type=str,
-        choices=["react", "act", "planact", "planreact", "zs", "zst"],
+        choices=["react", "act", "planact", "planreact", "zs", "zst", "bolaa"],
         default="react",
         help="agent reasoning type",
     )

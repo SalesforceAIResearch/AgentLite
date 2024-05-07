@@ -1,7 +1,7 @@
 from webshop_actions import ClickAction, SearchAction
 from webshop_env import Webshop
 from agentlite.actions import BaseAction, FinishAct, ThinkAct, PlanAct
-from agentlite.actions.InnerActions import INNER_ACT_KEY
+from agentlite.actions.InnerActions import INNER_ACT_KEY, AGENT_ACT_KEY
 from agentlite.agents import ABCAgent, BaseAgent, ManagerAgent
 from agentlite.commons import AgentAct, TaskPackage
 from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
@@ -293,8 +293,8 @@ class bolaa_webagent_model:
             params={INNER_ACT_KEY: "I should first ask the search_agent to search bright citrus deodorant"},
         )
         obs_1_1 = """OK"""
-        act_1_1 = AgentAct(
-            name=self.search_agent.action_name,
-            params={INNER_ACT_KEY: "I should first ask the search_agent to search bright citrus deodorant"},
-        )
+        # act_1_1 = AgentAct(
+        #     name=self.search_agent.name,
+        #     params={AGENT_CALL_ARG_KEY: "I should first ask the search_agent to search bright citrus deodorant"},
+        # )
         # obs_1_1 = """WEB PAGE: {
