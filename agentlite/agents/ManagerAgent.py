@@ -157,16 +157,13 @@ class ManagerAgent(BaseAgent):
                 observation = agent(new_task_package)
                 return observation
         # if action is inner action
-        if agent_act.name == FinishAct.action_name:
-            act_found_flag = True
-            observation = "Task Completed."
-            task.completion = "completed"
-            task.answer = FinishAct(**agent_act.params)
-        else:
-            for action in self.actions:
-                if act_match(agent_act.name, action):
-                    act_found_flag = True
-                    observation = action(**agent_act.params)
+        for action in self.actions:
+            if act_match(agent_act.name, action):
+                act_found_flag = True
+                observation = action(**agent_act.params)
+                if agent_act.name == FinishAct.action_name:
+                    task.answer = observation
+                    task.completion = "completed"
         # if not find this action
         if act_found_flag:
             return observation
