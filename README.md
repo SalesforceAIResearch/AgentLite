@@ -8,6 +8,7 @@
 
   [![Release Notes](https://img.shields.io/github/release/SalesforceAIResearch/AgentLite)](https://github.com/SalesforceAIResearch/AgentLite/releases)
   ![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-brightgreen.svg)
+  [![PyPI - Python Version](https://img.shields.io/pypi/v/agentlite-llm.svg?color=brightgreen)](https://pypi.org/project/agentlite-llm)
   [![License](https://img.shields.io/badge/License-Apache-green.svg)]()
   [![GitHub star chart](https://img.shields.io/github/stars/SalesforceAIResearch/AgentLite?style=social)](https://star-history.com/#SalesforceAIResearch/AgentLite)
 
