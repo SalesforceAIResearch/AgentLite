@@ -13,8 +13,9 @@ def get_requires():
 
 
 setup(
-    name="agentlite",
+    name="agentlite-llm",
     version="0.1.12",
+    url="https://github.com/SalesforceAIResearch/AgentLite",
     description="Light Library for Building LLM Agent System",
     packages=find_packages(exclude=["test*", "app*", "doc*", "example"]),
     python_requires=">=3.9",
