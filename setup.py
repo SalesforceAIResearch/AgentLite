@@ -14,9 +14,12 @@ def get_requires():
 
 setup(
     name="agentlite",
-    version="0.1.1",
+    version="0.1.12",
     description="Light Library for Building LLM Agent System",
     packages=find_packages(exclude=["test*", "app*", "doc*", "example"]),
     python_requires=">=3.9",
     install_requires=get_requires(),
+    license="Apache License 2.0",
+    author="Zhiwei Liu",
+    author_email="zhiweiliu@salesforce.com",
 )
