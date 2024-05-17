@@ -9,7 +9,6 @@ pydantic
 
 ## example dependencies
 numpy
-pandas<2.0.0
 wikipedia
 duckduckgo-search
 openmeteo_requests==1.2.0
