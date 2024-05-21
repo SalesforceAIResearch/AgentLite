@@ -109,7 +109,8 @@ def test_search_agent():
     # role = "searching online content"
     # labor_agent = SearchAgent(name=name, role=role, llm=llm, actions=actions)
     ## test the one-shot wikipedia search agent
-    labor_agent = WikiSearchAgent(llm=llm)
+    # labor_agent = WikiSearchAgent(llm=llm)
+    labor_agent = DuckSearchAgent(llm=llm)
 
     test_task = "what is the found date of microsoft"
     test_task_pack = TaskPackage(instruction=test_task)
