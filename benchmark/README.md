@@ -43,6 +43,19 @@ cd tool
 python evaluate_tools.py --llm gpt-4-0613 --agent_arch react
 ```
 
+## Tool-operation
+We follow [AgentBoard](https://github.com/hkust-nlp/AgentBoard) environment to setup the tool-operation benchmark. And we designed the individual agent via AgentLite with all the corresponding function call as actions.
+You should first get a `data/tool-operation` folder, which is a copy of data from AgentBoard with
+```shell
+cp -rf [AgentBoardPath]/data/tool-operation ./tool-operation/data/
+```
+Then, you could directly run evaluation in this folder with
+```
+cd tool
+python evaluate_tool_operation.py --llm gpt-4-32k --agent_arch react
+```
+
+
 
 ## Agent Architectures
 You can substitute the `--agent_arch` with different architectures as in [BOLAA](https://github.com/salesforce/BOLAA), including `react`, `act`, `planact`, `planreact`, `zs`, `zst`, `bolaa`. The multi-agent architecture of hotpotqa will soon be released.
