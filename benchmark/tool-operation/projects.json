@@ -1,0 +1,64 @@
+[
+    {
+        "name": "Homework and Assignments",
+        "is_favorite": false,
+        "tasks":
+        [
+            {
+                "content": "Solve algebra equations",
+                "description": "- Place: Library\n- TextBook: Algebra Essentials by Dr. Jane Smith\n- Consultation: If faced with difficulties, consult the teacher, tutor, or study group\n- Tips: Start with simpler equations to build confidence, don’t rush, and practice regularly.",
+                "due_date": "2015-06-01",
+                "duration": 60,
+                "duration_unit": "minute",
+                "priority": 1
+            },
+            {
+                "content": "Conduct a chemistry experiment",
+                "description": "- Place: Student Building\n- Textbook:Principles of Modern Chemistry by Dr. Alan Thompson\n- Equipment Needed: pH paper, thermometer and stirring rod\n- Chemicals Required: distilled water, hydrochloric acid and sodium hydroxide\n- Tips: 1. Ensure all apparatus are clean and dry before starting. 2. Conduct the experiment slowly to ensure accuracy. 3. Contact the teacher in advance.",
+                "due_date": "2015-06-12",
+                "duration": 90,
+                "duration_unit": "minute",
+                "priority": 2
+            },
+            {
+                "content": "Read and summarize a history chapter",
+                "description": "- Place: Quiet study room in the west wing of the library, second floor\n- TextBook: 'Epochs of World Civilization' by Prof. Alexander Williams\n- Chaper Name: World Modern History\n- Page Numbers: 255-280\n- Tips: Take breaks every 30 minutes to avoid information overload.",
+                "due_date": "2015-06-06",
+                "duration": 45,
+                "duration_unit": "minute",
+                "priority": 3
+            }
+        ]
+    },
+    {
+        "name": "Extracurricular Activities",
+        "is_favorite": false,
+        "tasks": 
+        [
+            {
+                "content": "Attend soccer practice",
+                "description": "- Place: Community Sports Field, Pitch #2\n- Coach: Mr. Alberto Ramirez\n- Equipment: soccer shoes and water bottle",
+                "due_date": "2015-06-12",
+                "duration": 90,
+                "duration_unit": "minute",
+                "priority": 4
+            },
+            {
+                "content": "Rehearse with the school band",
+                "description": "- Place: Student Building\n- Instrument: violin\n- Keys: Practice the assigned songs",
+                "due_date": "2015-06-02",
+                "duration": 60,
+                "duration_unit": "minute",
+                "priority": 4
+            },
+            {
+                "content": "Attend debate club meeting",
+                "description": "- Place: Student Building\n- Advisor: Mr. John Roberts, English Department\n- Keys: Prepare arguments on the assigned topic",
+                "due_date": "2015-06-08",
+                "duration": 60,
+                "duration_unit": "minute",
+                "priority":1
+            }
+        ]
+    }
+]

@@ -13,7 +13,7 @@ class finish(BaseAction):
 
     def __call__(self, response):
         params = {"answer": response}
-        action = (self.action_name, params)
+        action = ("finish", params)
         observation, reward, done, _ = self.env.step(action)
         return observation
 

@@ -11,7 +11,7 @@ class AgentLogger(BaseAgentLogger):
         self,
         log_file_name: str = "agent.log",
         FLAG_PRINT: bool = True,
-        OBS_OFFSET: int = 100,
+        OBS_OFFSET: int = 99999,
         PROMPT_DEBUG_FLAG: bool = False,
     ) -> None:
         super().__init__(log_file_name=log_file_name)

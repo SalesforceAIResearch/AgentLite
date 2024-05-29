@@ -181,3 +181,6 @@ wolfram.txt
 .idea/
 
 env.sh
+
+#credential
+credential.json
