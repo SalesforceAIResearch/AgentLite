@@ -34,7 +34,7 @@ def evaluate(data_name: str, idx: int, llm_name="gpt-4", agent_arch="react", PRO
     tool_type = dataset_i["tool"]
     if tool_type == "todo":
         env = TodoEnv(dataset=dataset_i)
-        agent = TodoAgent(env=env, llm=llm, PROMPT_DEBUG_FLAG=PROMPT_DEBUG_FLAG)
+        agent = TodoAgent(env=env, llm=llm, PROMPT_DEBUG_FLAG=True)
         task = dataset_i["goal"]
         print(f"Task: {task}")
         task_package = TaskPackage(instruction=task)

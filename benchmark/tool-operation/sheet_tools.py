@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 AUTHORIZATION = {
-    "API_JSON": f"{PROJECT_PATH}/agentboard/utils/sheet/credential.json",
+    "API_JSON": f"{PROJECT_PATH}/credential.json",
     "REFERENCE_SHEET_ID": "17MVNCONh-6Pw3Met2O31WhUHlgOcQz8TPJKikVpL8IY", 
     "YOUR_EMAIL": os.getenv("SHEET_EMAIL")
 }

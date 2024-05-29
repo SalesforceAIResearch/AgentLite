@@ -109,7 +109,7 @@ class todo_toolkits:
         return True, self.current_location
 
     def initial_project(self):
-        with open("{}/agentboard/utils/todo/projects.json".format(os.environ["PROJECT_PATH"]), "r") as f:
+        with open("{}/projects.json".format(os.environ["PROJECT_PATH"]), "r") as f:
             projects = json.load(f)
         for project in projects:
             _, returned_project = self.add_project(project={"name": project["name"]})
@@ -370,3 +370,7 @@ class todo_toolkits:
     
 if __name__ == "__main__":
     tool = todo_toolkits()
+    a = tool.get_projects()
+    print(a)
+    a = tool.get_tasks(project_id=2333943174)
+    print(a)
