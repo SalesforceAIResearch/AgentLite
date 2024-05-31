@@ -1,6 +1,7 @@
+from agentlite.exceptions.model_exceptions import ClientMissingException
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
-from openai import OpenAI
+from openai import AzureOpenAI, OpenAI
 
 from agentlite.llm.LLMConfig import LLMConfig
 
@@ -34,13 +35,18 @@ class BaseLLM:
         # return str
         raise NotImplementedError
 
-
-class OpenAIChatLLM(BaseLLM):
+class OpenAIBase(BaseLLM):
     def __init__(self, llm_config: LLMConfig):
         super().__init__(llm_config=llm_config)
-        self.client = OpenAI(api_key=llm_config.api_key)
+        self.client = None
 
     def run(self, prompt: str):
+        if self.client is None:
+            raise ClientMissingException(
+                """OpenAIBase is base class for inheritance only,
+                    please use AzureOpenAIBasedLLM or OpenAIChatLLM."""
+            )
+
         response = self.client.chat.completions.create(
             model=self.llm_name,
             messages=[
@@ -50,6 +56,19 @@ class OpenAIChatLLM(BaseLLM):
         )
         return response.choices[0].message.content
 
+class AzureOpenAIBasedLLM(OpenAIBase):
+    def __init__(self, llm_config: LLMConfig):
+        super().__init__(llm_config=llm_config)
+        self.client = AzureOpenAI(
+            api_key=llm_config.api_key,
+            api_version=llm_config.api_version,
+            azure_endpoint=llm_config.azure_endpoint,
+        )
+
+class OpenAIChatLLM(OpenAIBase):
+    def __init__(self, llm_config: LLMConfig):
+        super().__init__(llm_config=llm_config)
+        self.client = OpenAI(api_key=llm_config.api_key)
 
 class LangchainLLM(BaseLLM):
     def __init__(self, llm_config: LLMConfig):
@@ -94,7 +113,9 @@ class LangchainChatModel(BaseLLM):
 def get_llm_backend(llm_config: LLMConfig):
     llm_name = llm_config.llm_name
 
-    if llm_name in OPENAI_CHAT_MODELS:
+    if llm_config.azure_endpoint is not None:
+        return AzureOpenAIBasedLLM(llm_config)
+    elif llm_name in OPENAI_CHAT_MODELS:
         return LangchainChatModel(llm_config)
     elif llm_name in OPENAI_LLM_MODELS:
         return LangchainLLM(llm_config)
