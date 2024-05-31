@@ -91,10 +91,33 @@ class LangchainChatModel(BaseLLM):
         return self.llm_chain.run(prompt)
 
 
+class LangchainOllamaLLM(BaseLLM):
+    def __init__(self, llm_config: LLMConfig):
+        from langchain_community.llms import Ollama
+
+        super().__init__(llm_config)
+        llm = Ollama(
+            model=self.llm_name,
+            temperature=self.temperature,
+            num_predict=self.max_tokens,
+            base_url=llm_config.base_url
+            # api_key=llm_config.api_key,
+        )
+        human_template = "{prompt}"
+        prompt = PromptTemplate(template=human_template, input_variables=["prompt"])
+        self.llm_chain = LLMChain(prompt=prompt, llm=llm)
+
+    def run(self, prompt: str):
+        return self.llm_chain.run(prompt)
+
+
+
 def get_llm_backend(llm_config: LLMConfig):
     llm_name = llm_config.llm_name
 
-    if llm_name in OPENAI_CHAT_MODELS:
+    if llm_config.provider.lower() == "ollama":
+        return LangchainOllamaLLM(llm_config)
+    elif llm_name in OPENAI_CHAT_MODELS:
         return LangchainChatModel(llm_config)
     elif llm_name in OPENAI_LLM_MODELS:
         return LangchainLLM(llm_config)
