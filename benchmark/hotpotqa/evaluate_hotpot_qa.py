@@ -96,7 +96,7 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613", agent_a
     """
 
     # build the search agent
-    # llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
+    llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
     # running xlam 
     if llm_name in ["xlam", "xlam_v2"]:
         llm_config = LLMConfig(
@@ -118,13 +118,8 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613", agent_a
     f1_list, correct, results = [], 0, {}
     for test_task, answer in tqdm(task_instructions, desc="Processing"):
         test_task_pack = TaskPackage(instruction=test_task)
-
-        try:
-            response = agent(test_task_pack)
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
-            response = "Cannot find the answer."
-
+        response = agent(test_task_pack)
+        execution = agent.short_term_memory.get_action_chain(task=test_task_pack)
         f1, _, _ = f1_score(response, answer)
         f1_list.append(f1)
         correct += int(response == answer)
@@ -133,8 +128,7 @@ def run_hotpot_qa_agent(level="easy", llm_name="gpt-3.5-turbo-16k-0613", agent_a
         avg_f1 = np.mean(f1_list)
         acc = correct / len(task_instructions)
         
-        dump_str = f"{test_task}\t{answer}\t{response}\t{f1:.4f}\t{acc:.4f}\n"
-        dump_str = f"{test_task}\t{answer}\t{response}\t{f1:.4f}\t{acc:.4f}\n"
+        dump_str = f"{test_task}\t{answer}\t{response}\t{f1:.4f}\t{acc:.4f}\t{execution}\n"
         with open(f"data/{agent_arch}_{llm_name}_results_{level}.csv", "a") as f:
             f.write(dump_str)
             
