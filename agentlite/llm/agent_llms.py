@@ -114,12 +114,14 @@ class LangchainOllamaLLM(BaseLLM):
 
 def get_llm_backend(llm_config: LLMConfig):
     llm_name = llm_config.llm_name
+    llm_provider = llm_config.provider
 
-    if llm_config.provider.lower() == "ollama":
-        return LangchainOllamaLLM(llm_config)
-    elif llm_name in OPENAI_CHAT_MODELS:
+    if llm_name in OPENAI_CHAT_MODELS:
         return LangchainChatModel(llm_config)
     elif llm_name in OPENAI_LLM_MODELS:
         return LangchainLLM(llm_config)
     else:
-        return LangchainLLM(llm_config)
+        if llm_provider == "ollama":
+            return LangchainOllamaLLM(llm_config)
+        else:
+            return LangchainLLM(llm_config)
