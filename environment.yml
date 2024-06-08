@@ -1,0 +1,11 @@
+name: agentlite
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pip=23.2.1
+  - packaging
+  - pip:
+    - ipykernel==6.29.4
+    - python-dotenv==1.0.1
+
