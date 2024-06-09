@@ -65,7 +65,7 @@ class WikiSearchAgent(BaseAgent):
         # 3. think action and obs
         thought = "I find salesforce is Founded by former Oracle executive Marc Benioff in February 1999"
         act_3 = AgentAct(name=ThinkAct.action_name, params={INNER_ACT_KEY: thought})
-        obs_3 = ""
+        obs_3 = "OK"
 
         # 4. finish action
         answer = "February 1999"
@@ -103,14 +103,9 @@ def test_search_agent():
     llm_config = LLMConfig(llm_config_dict)
     # print(llm_config.__dict__)
     llm = get_llm_backend(llm_config)
-    # defining the agent
-    ## test simple no-example search agent with user provided name and default with wikipedia actions
-    # name = "search_agent"
-    # role = "searching online content"
-    # labor_agent = SearchAgent(name=name, role=role, llm=llm, actions=actions)
     ## test the one-shot wikipedia search agent
-    # labor_agent = WikiSearchAgent(llm=llm)
-    labor_agent = DuckSearchAgent(llm=llm)
+    labor_agent = WikiSearchAgent(llm=llm)
+    # labor_agent = DuckSearchAgent(llm=llm)
 
     test_task = "what is the found date of microsoft"
     test_task_pack = TaskPackage(instruction=test_task)
