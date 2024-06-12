@@ -15,12 +15,12 @@ from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
 from agentlite.logging.terminal_logger import AgentLogger
 
-LAM_URL = os.environ["LAM_URL"]
 webshop_env = Webshop()
 # =============================== start of webshop agent designing =============================== #
 
 def evaluate(idx: int, llm_name="gpt-3.5-turbo-16k-0613", agent_arch="react", PROMPT_DEBUG_FLAG=False):
     if llm_name in ["xlam", "xlam_v2"]:
+        LAM_URL = os.environ["LAM_URL"]
         llm_config = LLMConfig(
             {
                 "llm_name": llm_name, 
