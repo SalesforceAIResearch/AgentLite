@@ -69,7 +69,7 @@ python ./example/SearchManager.py
 We provide a simple UI feature with AgentLite for demo purpose. To enable this capbility, uncomment the UI parts in [requirements.txt](./requirements.txt) to install the steamlite package.
 After installation, start with
 ```shell
-steamlite run app/Homepage.py
+streamlit run app/Homepage.py
 ```
 Check our recorded UI demo.
 ![UI demo](./image/weather_agent.gif)
