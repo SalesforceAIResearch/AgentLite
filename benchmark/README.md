@@ -25,11 +25,25 @@ bash ./run_dev.sh
 it is highly suggested running webshop in backend with `tmux`.
 
 2. Since AgentLite is using a different python version, you should create a new environment for AgentLite.
-3. Run AgentLite evaluation in this folder  with
+3. Run AgentLite evaluation in this folder with
+
 ```
 cd webshop
 python evaluate_webshop.py --llm gpt-4-0613 --agent_arch act
 ```
+
+To evaluate a model from the [Hugging Face Hub](https://huggingface.co/models) with a [vLLM](https://github.com/vllm-project/vllm) backend, first spin up the server with:
+
+```shell
+vllm serve Salesforce/xLAM-v0.1-r --tensor-parallel-size {NUM_GPUS}
+```
+
+Then, in a separate terminal run:
+
+```shell
+python evaluate_webshop.py --llm Salesforce/xLAM-v0.1-r --agent_arch act
+```
+
 
 ## Tool-query
 We follow [AgentBoard](https://github.com/hkust-nlp/AgentBoard) environment to setup the tool-query benchmark. And we designed the individual agent via AgentLite with all the corresponding function call as actions.
