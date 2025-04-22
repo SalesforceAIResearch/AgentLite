@@ -24,6 +24,9 @@ class UILogger(BaseAgentLogger):
     def __save_log__(self, log_str: str):
         with st.chat_message("assistant"):
             st.markdown(log_str)
+        # ensure messages list exists for logger
+        if "messages" not in st.session_state:
+            st.session_state.messages = []
         st.session_state.messages.append({"role": "assistant", "content": log_str})
             
     def receive_task(self, task: TaskPackage, agent_name: str):
