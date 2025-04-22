@@ -1,13 +1,15 @@
 # defining the educator class for chat
 from typing import List
-from agentlite.agents import ABCAgent, BaseAgent
-from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
+from agentlite.agents import ABCAgent, BaseAgent, ManagerAgent
+from agentlite.llm.agent_llms import BaseLLM, get_llm_backend, OPENAI_CHAT_MODELS, DEEPSEEK_CHAT_MODELS
 from agentlite.llm.LLMConfig import LLMConfig
 from agentlite.actions.BaseAction import BaseAction
 
 from agentlite.logging.streamlit_logger import UILogger
+from agentlite.commons import TaskPackage
 
 import streamlit as st
+import os
 
 
 # Define the Philosopher class
@@ -36,146 +38,90 @@ class Philosopher(BaseAgent):
 #             "api_key": "EMPTY"
 #         }
 #     )
-llm_name = "gpt-4"
-llm_config = LLMConfig({"llm_name": llm_name, "temperature": 0.0})
-llm = get_llm_backend(llm_config)
-
-logger = UILogger()
-
-
-Confucius = Philosopher(philosopher="Confucius", llm=llm)
-Socrates = Philosopher(philosopher="Socrates", llm=llm)
-Aristotle = Philosopher(philosopher="Aristotle", llm=llm)
-
-from agentlite.commons import AgentAct, TaskPackage
-from agentlite.actions import ThinkAct, FinishAct
-from agentlite.actions.InnerActions import INNER_ACT_KEY
-from agentlite.agents.agent_utils import AGENT_CALL_ARG_KEY
-
-# Add an illustration example for the philosopher agent
-exp_task = "What do you think the meaning of life?"
-exp_task_pack = TaskPackage(instruction=exp_task)
-
-act_1 = AgentAct(
-    name=ThinkAct.action_name,
-    params={
-        INNER_ACT_KEY: f"""Based on my thought, we are born to live a meaningful life, and it is in living a meaningful life that our existence gains value. Even if a life is brief, if it holds value, it is meaningful. A life without value is merely existence, a mere survival, a walking corpse."""
-    },
-)
-obs_1 = "OK. I have finished my thought, I can pass it to the manager now."
-
-act_2 = AgentAct(
-    name=FinishAct.action_name,
-    params={INNER_ACT_KEY: "I can summarize my thought now."},
-)
-obs_2 = "I finished my task, I think the meaning of life is to pursue value for the whold world."
-exp_act_obs = [(act_1, obs_1), (act_2, obs_2)]
-
-Confucius.prompt_gen.add_example(task=exp_task_pack, action_chain=exp_act_obs)
-Socrates.prompt_gen.add_example(task=exp_task_pack, action_chain=exp_act_obs)
-Aristotle.prompt_gen.add_example(task=exp_task_pack, action_chain=exp_act_obs)
-
-# define the manager agent
-from agentlite.agents import ManagerAgent
-
-manager_agent_info = {
-    "name": "ClockTower",
-    "role": "you are managing Confucius, Socrates and Aristotle to discuss on questions. Ask their opinion one by one and summarize their view of point.",
-}
-team = [Confucius, Socrates, Aristotle]
-manager_agent = ManagerAgent(
-    name=manager_agent_info["name"],
-    role=manager_agent_info["role"],
-    llm=llm,
-    TeamAgents=team,
-    logger=logger,
-)
-
-# add illustration example for the manager agent
-
-exp_task = "What is the meaning of life?"
-exp_task_pack = TaskPackage(instruction=exp_task)
-
-act_1 = AgentAct(
-    name=ThinkAct.action_name,
-    params={
-        INNER_ACT_KEY: f"""I can ask Confucius, Socrates and Aristotle one by one on their thoughts, and then summary the opinion myself."""
-    },
-)
-obs_1 = "OK."
-
-
-act_2 = AgentAct(
-    name=Confucius.name,
-    params={
-        AGENT_CALL_ARG_KEY: "What is your opinion on the meaning of life?",
-    },
-)
-obs_2 = """Based on my thought, I think the meaning of life is to pursue value for the whold world."""
-
-
-act_3 = AgentAct(
-    name=ThinkAct.action_name,
-    params={
-        INNER_ACT_KEY: f"""I have obtained information from Confucius, I need to collect more information from Socrates."""
-    },
-)
-obs_3 = "OK."
-
-act_4 = AgentAct(
-    name=Socrates.name,
-    params={
-        AGENT_CALL_ARG_KEY: "What is your opinion on the meaning of life?",
-    },
-)
-obs_4 = """I think the meaning of life is finding happiness."""
-
-act_5 = AgentAct(
-    name=ThinkAct.action_name,
-    params={
-        INNER_ACT_KEY: f"""I have obtained information from Confucius and Socrates, I can collect more information from Aristotle."""
-    },
-)
-obs_5 = "OK."
-
-act_6 = AgentAct(
-    name=Aristotle.name,
-    params={
-        AGENT_CALL_ARG_KEY: "What is your opinion on the meaning of life?",
-    },
-)
-obs_6 = """I believe the freedom of spirit is the meaning."""
-
-
-act_7 = AgentAct(
-    name=FinishAct.action_name,
-    params={
-        INNER_ACT_KEY: "Their thought on the meaning of life is to pursue value, happiniss and freedom of spirit."
-    },
-)
-obs_7 = "Task Completed. The meaning of life is to pursue value, happiness and freedom of spirit."
-
-exp_act_obs = [
-    (act_1, obs_1),
-    (act_2, obs_2),
-    (act_3, obs_3),
-    (act_4, obs_4),
-    (act_5, obs_5),
-    (act_6, obs_6),
-    (act_7, obs_7),
-]
-
-manager_agent.prompt_gen.add_example(
-    task=exp_task_pack, action_chain=exp_act_obs
-)
-
-st.set_page_config(page_title="Triad of Wisdom", page_icon="🧠", layout="wide")
 
 # Header of the app
-st.header("AgentLite: Triad of Wisdom")
-st.sidebar.header("Triad of Wisdom")
-st.sidebar.markdown(
-    "This is a top-class philosopher group chat that integrates the wisdoms of of Confucius, Socrates and Aristotle to answer your life questions."
+st.set_page_config(page_title="Philosophers Team", page_icon="🧠", layout="wide")
+
+# 模型选择
+st.sidebar.header("模型设置")
+
+api_provider = st.sidebar.selectbox(
+    "选择API提供商",
+    ["OpenAI", "DeepSeek"],
+)
+
+if api_provider == "OpenAI":
+    # 确保已设置API密钥
+    if "OPENAI_API_KEY" not in os.environ or os.environ["OPENAI_API_KEY"] == "EMPTY":
+        openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
+        if openai_api_key:
+            os.environ["OPENAI_API_KEY"] = openai_api_key
+        else:
+            st.warning("请先在侧边栏输入API密钥")
+            st.stop()
+            
+    llm_model = st.sidebar.selectbox(
+        "选择模型",
+        OPENAI_CHAT_MODELS,
+        index=OPENAI_CHAT_MODELS.index("gpt-4") if "gpt-4" in OPENAI_CHAT_MODELS else 0
+    )
+    
+elif api_provider == "DeepSeek":
+    # 确保已设置API密钥
+    if "DEEPSEEK_API_KEY" not in os.environ or os.environ["DEEPSEEK_API_KEY"] == "EMPTY":
+        deepseek_api_key = st.sidebar.text_input("DeepSeek API Key", type="password")
+        if deepseek_api_key:
+            os.environ["DEEPSEEK_API_KEY"] = deepseek_api_key
+        else:
+            st.warning("请先在侧边栏输入API密钥")
+            st.stop()
+            
+    llm_model = st.sidebar.selectbox(
+        "选择模型",
+        DEEPSEEK_CHAT_MODELS,
+        index=0
+    )
+
+# 根据选择设置llm配置
+llm_config = LLMConfig({"llm_name": llm_model, "temperature": 0.0})
+llm = get_llm_backend(llm_config)
+
+col1, col2 = st.columns([2, 1])
+
+with col1:
+    st.header(f"AgentLite: Philosophers Team (使用{api_provider}的{llm_model})")
+
+    agent_info = [
+        {"name": "Socrates", "role": "Expert of Socratic method, ancient Greek philosopher."},
+        {"name": "Nietzsche", "role": "Expert of nihilism, German philosopher, cultural critic."},
+        {"name": "Aristotle", "role": "Expert of logic and moderation, ancient Greek philosopher."},
+        {"name": "Buddha", "role": "Expert of Buddhism, founding figure of the Buddhist tradition."},
+        {"name": "Confucius", "role": "Expert of Confucianism, founding figure of the Confucianism."},
+    ]
+
+with col2:
+    st.info(
+        "This is a multi-agent system demonstration. Unlike a simple agent, by bringing multiple philosophers with different backgrounds and approaches into the conversation, we can thoroughly discuss your task from different aspects."
+    )
+
+agents = []
+logger = UILogger()
+
+for info in agent_info:
+    agent = BaseAgent(
+        name=info["name"],
+        role=info["role"],
+        llm=llm,
+        logger=logger,
+    )
+    agents.append(agent)
+
+manager = ManagerAgent(
+    llm=llm,
+    name="Aristotle",
+    role="You are the team's philosopher manager, prioritizing unity in conversation. Your key responsibilities include:\n1. Directing discussions by inviting appropriate team members to share insights based on their expertise.\n2. Delivering final responses that synthesize the team's collective wisdom.\n3. Fostering respectful dialogue where each member's unique perspective is valued.\n4. Maintaining focused conversations by keeping discussions relevant to the task at hand.\n5. Discreetly handle sensitive topics to maintain a professional atmosphere.\nAs manager, you embody Aristotle's principles of moderation and practical wisdom in your leadership approach.",
+    TeamAgents=agents,
+    logger=logger,
 )
 
 # Notes and warnings
@@ -183,23 +129,31 @@ st.warning(
     "Note: this service is hosted within Salesforce and user inputs are NOT logged. Regardless, it is not recommended that you enter confidential information."
 )
 
-
-# Initialize session state variables if they don't exist
+# Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-if prompt := st.chat_input("Ask Confucius, Socrates and Aristotle a question:"):
-    task_pack = TaskPackage(instruction=prompt)
-    st.session_state.messages.append({"role": "user", "content": prompt})
+# Display chat messages from history on app rerun
+# for message in st.session_state.messages:
+#     with st.chat_message(message["role"]):
+#         st.markdown(message["content"])
+
+# Make sure "philosopher_round" exists
+if "philosopher_round" not in st.session_state:
+    st.session_state.philosopher_round = 0
+
+if prompt := st.chat_input("Enter your task:"):
+    task_package = TaskPackage(instruction=prompt)
     # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
+    res = manager(task_package)
     # Display assistant response in chat message container
-    response = manager_agent(task_pack)
     with st.chat_message("assistant"):
-        st.markdown(response)
-
-    st.session_state.messages.append({"role": "assistant", "content": response})
+        st.markdown(res)
+    # Add message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.session_state.messages.append({"role": "assistant", "content": res})
 
 st.info(
     "AgentLite is an AI created by the Salesforce AI research group. Your security and confidentiality are prioritized. If you have questions or need assistance with anything, just let me know, and I'll do my best to help. Have a great day!"
