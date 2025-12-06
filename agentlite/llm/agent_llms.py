@@ -15,6 +15,13 @@ OPENAI_CHAT_MODELS = [
     "gpt-4-32k-0613",
     "gpt-4-1106-preview",
 ]
+
+DEEPSEEK_CHAT_MODELS = [
+    "deepseek-chat",
+    "deepseek-reasoner",
+    "deepseek-r1",
+]
+
 OPENAI_LLM_MODELS = ["text-davinci-003", "text-ada-001"]
 
 
@@ -39,6 +46,25 @@ class OpenAIChatLLM(BaseLLM):
     def __init__(self, llm_config: LLMConfig):
         super().__init__(llm_config=llm_config)
         self.client = OpenAI(api_key=llm_config.api_key)
+
+    def run(self, prompt: str):
+        response = self.client.chat.completions.create(
+            model=self.llm_name,
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt},
+            ],
+        )
+        return response.choices[0].message.content
+
+
+class DeepSeekChatLLM(BaseLLM):
+    def __init__(self, llm_config: LLMConfig):
+        super().__init__(llm_config=llm_config)
+        self.client = OpenAI(
+            api_key=llm_config.deepseek_api_key,
+            base_url="https://api.deepseek.com"
+        )
 
     def run(self, prompt: str):
         response = self.client.chat.completions.create(
@@ -91,6 +117,26 @@ class LangchainChatModel(BaseLLM):
         return self.llm_chain.run(prompt)
 
 
+class LangchainDeepSeekChatModel(BaseLLM):
+    def __init__(self, llm_config: LLMConfig):
+        from langchain_openai import ChatOpenAI
+
+        super().__init__(llm_config)
+        llm = ChatOpenAI(
+            model_name=self.llm_name,
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+            base_url="https://api.deepseek.com",
+            api_key=llm_config.deepseek_api_key,
+        )
+        human_template = "{prompt}"
+        prompt = PromptTemplate(template=human_template, input_variables=["prompt"])
+        self.llm_chain = LLMChain(prompt=prompt, llm=llm)
+
+    def run(self, prompt: str):
+        return self.llm_chain.run(prompt)
+
+
 # class LangchainOllamaLLM(BaseLLM):
 #     def __init__(self, llm_config: LLMConfig):
 #         from langchain_community.llms import Ollama
@@ -113,7 +159,10 @@ class LangchainChatModel(BaseLLM):
 def get_llm_backend(llm_config: LLMConfig):
     llm_name = llm_config.llm_name
     llm_provider = llm_config.provider
-    if llm_name in OPENAI_CHAT_MODELS:
+    
+    if llm_name in DEEPSEEK_CHAT_MODELS:
+        return LangchainDeepSeekChatModel(llm_config)
+    elif llm_name in OPENAI_CHAT_MODELS:
         return LangchainChatModel(llm_config)
     elif llm_name in OPENAI_LLM_MODELS:
         return LangchainLLM(llm_config)

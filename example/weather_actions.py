@@ -1,9 +1,12 @@
 import requests
 import time
-import openmeteo_requests
 import requests_cache
-import pandas as pd
 from retry_requests import retry
+try:
+    import openmeteo_requests
+    openmeteo_available = True
+except ImportError:
+    openmeteo_available = False
 
 from agentlite.actions import BaseAction
 
@@ -19,7 +22,8 @@ URLS = {
 # Setup the Open-Meteo API client with cache and retry on error
 cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
 retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
-openmeteo = openmeteo_requests.Client(session = retry_session)
+if openmeteo_available:
+    openmeteo = openmeteo_requests.Client(session = retry_session)
 
 class get_user_current_date(BaseAction):
     def __init__(self) -> None:
@@ -115,21 +119,23 @@ class get_weather_forcast(BaseAction):
             "hourly": "temperature_2m",
             "temperature_unit": "fahrenheit"
         }
-        responses = openmeteo.weather_api(self.url, params=params)
-        observation = ""
-        # Process first location. Add a for-loop for multiple locations or weather models
-        response = responses[0]
-        # observation += f"Coordinates {response.Latitude()}°N {response.Longitude()}°E"
-        # observation += f"Elevation {response.Elevation()} m asl"
-        # # Current values. The order of variables needs to be the same as requested.
-        current = response.Current()
-        current_temperature_2m = current.Variables(0).Value()
-        current_rain = current.Variables(1).Value()
-
-        # observation += f"Current time {current.Time()}"
-        observation += f"Current temperature {current_temperature_2m} F\n"
-        observation += f"Current rain {current_rain}"
-        return observation
+        if openmeteo_available:
+            responses = openmeteo.weather_api(self.url, params=params)
+            response = responses[0]
+            current = response.Current()
+            temp = current.Variables(0).Value()
+            rain = current.Variables(1).Value()
+            return f"Current temperature {temp} F\nCurrent rain {rain}"
+        else:
+            resp = requests.get(self.url, params=params)
+            if resp.status_code == 200:
+                data = resp.json()
+                cw = data.get("current_weather", {})
+                temp = cw.get("temperature", "N/A")
+                rain = cw.get("rain", "N/A")
+                return f"Current temperature {temp}°C\nCurrent rain {rain}"
+            else:
+                return resp.text
 
 if __name__ == "__main__":
     action = get_user_current_date()
