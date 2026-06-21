@@ -1,6 +1,8 @@
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from openai import OpenAI
+from huggingface_hub import model_info
+from huggingface_hub.utils._errors import RepositoryNotFoundError
 
 from agentlite.llm.LLMConfig import LLMConfig
 
@@ -16,6 +18,14 @@ OPENAI_CHAT_MODELS = [
     "gpt-4-1106-preview",
 ]
 OPENAI_LLM_MODELS = ["text-davinci-003", "text-ada-001"]
+
+def is_huggingface_model(llm_name: str) -> bool:
+    """Check if the model is available on the Hugging Face Hub"""
+    try:
+        model_info(llm_name)
+        return True
+    except RepositoryNotFoundError:
+        return False
 
 
 class BaseLLM:
@@ -45,6 +55,20 @@ class OpenAIChatLLM(BaseLLM):
             model=self.llm_name,
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt},
+            ],
+        )
+        return response.choices[0].message.content
+
+class VllmChatModel(BaseLLM):
+    def __init__(self, llm_config: LLMConfig):
+        super().__init__(llm_config)
+        self.client = OpenAI(base_url="http://localhost:8000/v1", api_key="EMPTY")
+
+    def run(self, prompt: str):
+        response = self.client.chat.completions.create(
+            model=self.llm_name,
+            messages=[
                 {"role": "user", "content": prompt},
             ],
         )
@@ -117,6 +141,8 @@ def get_llm_backend(llm_config: LLMConfig):
         return LangchainChatModel(llm_config)
     elif llm_name in OPENAI_LLM_MODELS:
         return LangchainLLM(llm_config)
+    elif is_huggingface_model(llm_name):
+        return VllmChatModel(llm_config)
     else:
         return LangchainLLM(llm_config)
     # TODO: add more llm providers and inference APIs but for now we are using langchainLLM as the default

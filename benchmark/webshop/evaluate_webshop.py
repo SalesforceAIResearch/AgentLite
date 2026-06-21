@@ -88,7 +88,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     rewards = []
     all_task_ids = list(range(0, 251))
-    REWARD_LOG_FILE = f"{args.llm}_{args.agent_arch}_results_webshop.csv"
+    REWARD_LOG_FILE = f"{args.llm.replace('/', '_')}_{args.agent_arch}_results_webshop.csv"
     runned_ids = get_runned_ids(REWARD_LOG_FILE)
     if runned_ids is None:
         evaluate_ids = all_task_ids
