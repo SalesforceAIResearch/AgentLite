@@ -1,4 +1,4 @@
-from SearchActions import WikipediaSearch
+from SearchActions import WIKIPEDIA_ACTION_NAME, WikipediaSearch
 
 from agentlite.actions import BaseAction, FinishAct, ThinkAct, PlanAct
 from agentlite.actions.InnerActions import INNER_ACT_KEY
@@ -8,12 +8,27 @@ from agentlite.llm.agent_llms import BaseLLM, get_llm_backend
 from agentlite.llm.LLMConfig import LLMConfig
 from agentlite.logging.terminal_logger import AgentLogger
 
+
 class WikiSearchAgent(BaseAgent):
     """
     Agent to search Wikipedia content and answer questions.
     """
 
-    def __init__(self, llm: BaseLLM, agent_arch: str = "react", PROMPT_DEBUG_FLAG=False):
+    def __init__(
+        self,
+        llm: BaseLLM,
+        agent_arch: str = "react",
+        PROMPT_DEBUG_FLAG=False,
+        search_mode: str = "online",
+        rag_index_dir: str = None,
+        rag_top_k: int = None,
+        rag_strategy: str = None,
+        rag_embed_model: str = None,
+        rag_embedding_dim: int = None,
+        rag_cache_dir: str = None,
+        rag_device: str = None,
+        rag_text_lookup: str = None,
+    ):
         name = "wiki_search_agent"
         role = "Answer questions by searching Wikipedia content."
         constraint = "Generation should be simple and clear."
@@ -26,11 +41,23 @@ class WikiSearchAgent(BaseAgent):
         else:
             reasoning_type = agent_arch
 
+        wiki_search_action = WikipediaSearch(
+            mode=search_mode,
+            rag_index_dir=rag_index_dir,
+            rag_top_k=rag_top_k,
+            rag_strategy=rag_strategy,
+            rag_embed_model=rag_embed_model,
+            rag_embedding_dim=rag_embedding_dim,
+            rag_cache_dir=rag_cache_dir,
+            rag_device=rag_device,
+            rag_text_lookup=rag_text_lookup,
+        )
+
         super().__init__(
             name=name,
             role=role,
             llm=llm,
-            actions=[WikipediaSearch()],
+            actions=[wiki_search_action],
             reasoning_type=reasoning_type,
             constraint=constraint,
             instruction=instruction, # common instruction will use default in agentlite.agent_prompts.prompt_utils.DEFAULT_PROMPT["agent_instruction"]
@@ -67,7 +94,7 @@ class WikiSearchAgent(BaseAgent):
 
         # 2. First search action and observation
         act_params1 = {"query": "Milhouse"}
-        act1_2 = AgentAct(name=WikipediaSearch().action_name, params=act_params1)
+        act1_2 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params1)
         obs1_2 = "Milhouse Mussolini Van Houten is a recurring character in the Fox animated television series The Simpsons voiced by Pamela Hayden and created by Matt Groening. Groening chose the name Milhouse, also the middle name of President Richard Nixon, because it was the most unfortunate name [he] could think of for a kid"
 
         # 3. Second thought to refine search
@@ -101,7 +128,7 @@ class WikiSearchAgent(BaseAgent):
 
         # 2. First search action and observation for Pavel Urysohn
         act_params2_1 = {"query": "Pavel Urysohn"}
-        act2_2 = AgentAct(name=WikipediaSearch().action_name, params=act_params2_1)
+        act2_2 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params2_1)
         obs2_2 = "Pavel Samuilovich Urysohn (February 3, 1898 â August 17, 1924) was a Soviet mathematician who is best known for his contributions in dimension theory."
 
         # 3. Second thought for searching Leonid Levin
@@ -111,7 +138,7 @@ class WikiSearchAgent(BaseAgent):
 
         # 4. Second search action and observation for Leonid Levin
         act_params2_2 = {"query": "Leonid Levin"}
-        act2_4 = AgentAct(name=WikipediaSearch().action_name, params=act_params2_2)
+        act2_4 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params2_2)
         obs2_4 = "Leonid Anatolievich Levin is a Soviet-American mathematician and computer scientist."
 
         # 5. Final thought and finish action for task 2
@@ -147,7 +174,7 @@ class WikiSearchAgent(BaseAgent):
 
         # 1. First search action and observation
         act_params1 = {"query": "Milhouse"}
-        act1_1 = AgentAct(name=WikipediaSearch().action_name, params=act_params1)
+        act1_1 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params1)
         obs1_1 = "Milhouse Mussolini Van Houten is a recurring character in the Fox animated television series The Simpsons voiced by Pamela Hayden and created by Matt Groening. Groening chose the name Milhouse, also the middle name of President Richard Nixon, because it was the most unfortunate name [he] could think of for a kid"
 
        # 2. Final thought and finish action
@@ -169,12 +196,12 @@ class WikiSearchAgent(BaseAgent):
 
         # 1. First search action and observation for Pavel Urysohn
         act_params2_1 = {"query": "Pavel Urysohn"}
-        act2_1 = AgentAct(name=WikipediaSearch().action_name, params=act_params2_1)
+        act2_1 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params2_1)
         obs2_1 = "Pavel Samuilovich Urysohn (February 3, 1898 â August 17, 1924) was a Soviet mathematician who is best known for his contributions in dimension theory."
 
         # 2. Second search action and observation for Leonid Levin
         act_params2_2 = {"query": "Leonid Levin"}
-        act2_2 = AgentAct(name=WikipediaSearch().action_name, params=act_params2_2)
+        act2_2 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params2_2)
         obs2_2 = "Leonid Anatolievich Levin is a Soviet-American mathematician and computer scientist."
 
         # 3. Final thought and finish action for task 2
@@ -209,7 +236,7 @@ class WikiSearchAgent(BaseAgent):
 
         # 2. First search action and observation
         act_params1 = {"query": "Milhouse"}
-        act1_2 = AgentAct(name=WikipediaSearch().action_name, params=act_params1)
+        act1_2 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params1)
         obs1_2 = "Milhouse Mussolini Van Houten is a recurring character in the Fox animated television series The Simpsons voiced by Pamela Hayden and created by Matt Groening. Groening chose the name Milhouse, also the middle name of President Richard Nixon, because it was the most unfortunate name [he] could think of for a kid"
 
         # 3. Final thought and finish action
@@ -237,12 +264,12 @@ class WikiSearchAgent(BaseAgent):
 
         # 2. First search action and observation for Pavel Urysohn
         act_params2_1 = {"query": "Pavel Urysohn"}
-        act2_2 = AgentAct(name=WikipediaSearch().action_name, params=act_params2_1)
+        act2_2 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params2_1)
         obs2_2 = "Pavel Samuilovich Urysohn (February 3, 1898 â August 17, 1924) was a Soviet mathematician who is best known for his contributions in dimension theory."
 
         # 3. Second search action and observation for Leonid Levin
         act_params2_2 = {"query": "Leonid Levin"}
-        act2_3 = AgentAct(name=WikipediaSearch().action_name, params=act_params2_2)
+        act2_3 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params2_2)
         obs2_3 = "Leonid Anatolievich Levin is a Soviet-American mathematician and computer scientist."
 
         # 4. Final finish action for task 2
@@ -278,7 +305,7 @@ class WikiSearchAgent(BaseAgent):
 
         # 2. First search action and observation
         act_params1 = {"query": "Milhouse"}
-        act1_2 = AgentAct(name=WikipediaSearch().action_name, params=act_params1)
+        act1_2 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params1)
         obs1_2 = "Milhouse Mussolini Van Houten is a recurring character in the Fox animated television series The Simpsons voiced by Pamela Hayden and created by Matt Groening. Groening chose the name Milhouse, also the middle name of President Richard Nixon, because it was the most unfortunate name [he] could think of for a kid"
 
         # 3. Second thought to refine search
@@ -312,7 +339,7 @@ class WikiSearchAgent(BaseAgent):
 
         # 2. First search action and observation for Pavel Urysohn
         act_params2_1 = {"query": "Pavel Urysohn"}
-        act2_2 = AgentAct(name=WikipediaSearch().action_name, params=act_params2_1)
+        act2_2 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params2_1)
         obs2_2 = "Pavel Samuilovich Urysohn (February 3, 1898 â August 17, 1924) was a Soviet mathematician who is best known for his contributions in dimension theory."
 
         # 3. Second thought for searching Leonid Levin
@@ -322,7 +349,7 @@ class WikiSearchAgent(BaseAgent):
 
         # 4. Second search action and observation for Leonid Levin
         act_params2_2 = {"query": "Leonid Levin"}
-        act2_4 = AgentAct(name=WikipediaSearch().action_name, params=act_params2_2)
+        act2_4 = AgentAct(name=WIKIPEDIA_ACTION_NAME, params=act_params2_2)
         obs2_4 = "Leonid Anatolievich Levin is a Soviet-American mathematician and computer scientist."
 
         # 5. Final thought and finish action for task 2
